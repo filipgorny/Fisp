@@ -6,99 +6,123 @@ type Element interface {
 	IsList() bool
 	NumberValue() float64
 	StringValue() string
-	Children() *[]Element
+	ListElementValue() *ListElement
+	Children() []*Element
 }
 
 // Symbol
 
-type Symbol struct {
+type SymbolElement struct {
 	stringValue string
 }
 
-func (s Symbol) IsList() bool {
+func (s SymbolElement) IsList() bool {
 	return false
 }
 
-func (s Symbol) NumberValue() float64 {
+func (s SymbolElement) NumberValue() float64 {
 	return 0
 }
 
-func (s Symbol) StringValue() string {
+func (s SymbolElement) StringValue() string {
 	return s.stringValue
 }
 
-func (s Symbol) Children() *[]Element {
+func (s SymbolElement) Children() []*Element {
+	return nil
+}
+
+func (e SymbolElement) ListElementValue() *ListElement {
 	return nil
 }
 
 // LIST
 
-type List struct {
-	children []Element
+type ListElement struct {
+	elements []Element
 }
 
-func (l List) IsList() bool {
+func (l ListElement) IsList() bool {
 	return true
 }
 
-func (l List) NumberValue() float64 {
+func (l ListElement) NumberValue() float64 {
 	return 0
 }
 
-func (l List) StringValue() string {
+func (l ListElement) StringValue() string {
 	var s = ""
 
-	for _, element := range l.children {
-		s = s + ", " + element.StringValue()
+	for _, element := range l.Children() {
+		el := *element
+		s = s + ", " + el.StringValue()
 	}
 
 	return s
 }
 
-func (l List) Children() *[]Element {
-	return &(l.children)
+func (l ListElement) Children() []*Element {
+	var result []*Element
+
+	for _, el := range l.elements {
+		result = append(result, &el)
+	}
+
+	return result
+}
+
+func (l ListElement) ListElementValue() *ListElement {
+	return &l
 }
 
 // Number
 
-type Number struct {
+type NumberElement struct {
 	numberValue float64
 }
 
-func (n Number) IsList() bool {
+func (n NumberElement) IsList() bool {
 	return false
 }
 
-func (n Number) NumberValue() float64 {
+func (n NumberElement) NumberValue() float64 {
 	return n.numberValue
 }
 
-func (n Number) StringValue() string {
+func (n NumberElement) StringValue() string {
 	return strconv.FormatFloat(n.numberValue, 'E', -1, 64)
 }
 
-func (n Number) Children() *[]Element {
+func (n NumberElement) Children() []*Element {
+	return nil
+}
+
+func (n NumberElement) ListElementValue() *ListElement {
 	return nil
 }
 
 // String
 
-type String struct {
+type StringElement struct {
 	stringValue string
 }
 
-func (s String) IsList() bool {
+func (s StringElement) IsList() bool {
 	return false
 }
 
-func (s String) NumberValue() float64 {
+func (s StringElement) NumberValue() float64 {
 	return 0
 }
 
-func (s String) StringValue() string {
+func (s StringElement) StringValue() string {
 	return s.stringValue
 }
 
-func (s String) Children() *[]Element {
+func (s StringElement) Children() []*Element {
+	return nil
+}
+
+func (s StringElement) ListElementValue() *ListElement {
 	return nil
 }

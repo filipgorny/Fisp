@@ -2,8 +2,6 @@ package main
 
 import (
 	"io/ioutil"
-
-	"github.com/kr/pretty"
 )
 
 func main() {
@@ -15,7 +13,5 @@ func main() {
 
 	tokens := tokenize(string(dat))
 
-	ast := parse(tokens)
-
-	pretty.Print(ast)
+	parse(tokens)
 }

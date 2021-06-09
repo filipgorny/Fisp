@@ -19,6 +19,7 @@ func main() {
 
 	spec := language.CreateSpec([]language.BuiltInMethod{
 		math.Add,
+		math.Substract,
 	})
 
 	code := core.Parse(core.Tokenize(string(dat)))

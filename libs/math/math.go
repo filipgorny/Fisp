@@ -38,6 +38,11 @@ var Substract = language.BuiltInMethod{
 				continue
 			}
 
+			if i == 1 {
+				sum = tokenElement.NumberValue()
+				continue
+			}
+
 			sum -= tokenElement.NumberValue()
 		}
 

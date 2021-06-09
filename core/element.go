@@ -1,12 +1,12 @@
 package core
 
 import (
-	"log"
 	"strconv"
 )
 
 type Element interface {
 	IsList() bool
+	IsSymbol() bool
 	NumberValue() float64
 	StringValue() string
 	ListElementValue() *ListElement
@@ -22,6 +22,10 @@ type SymbolElement struct {
 
 func (s SymbolElement) IsList() bool {
 	return false
+}
+
+func (s SymbolElement) IsSymbol() bool {
+	return true
 }
 
 func (s SymbolElement) NumberValue() float64 {
@@ -73,14 +77,16 @@ func (l ListElement) SymbolValue() string {
 	return l.StringValue()
 }
 
+func (l ListElement) IsSymbol() bool {
+	return true
+}
+
 func (l ListElement) Children() []*Element {
 	var result []*Element
 
 	for i, _ := range l.elements {
 		result = append(result, &l.elements[i])
 	}
-
-	log.Print(result)
 
 	return result
 }
@@ -103,12 +109,16 @@ func (n NumberElement) IsList() bool {
 	return false
 }
 
+func (n NumberElement) IsSymbol() bool {
+	return true
+}
+
 func (n NumberElement) NumberValue() float64 {
 	return n.Value
 }
 
 func (n NumberElement) StringValue() string {
-	return strconv.FormatFloat(n.Value, 'E', -1, 64)
+	return strconv.FormatFloat(n.Value, 'f', 2, 64)
 }
 
 func (n NumberElement) Children() []*Element {
@@ -133,6 +143,10 @@ func (s StringElement) IsList() bool {
 	return false
 }
 
+func (s StringElement) IsSymbol() bool {
+	return true
+}
+
 func (s StringElement) NumberValue() float64 {
 	return 0
 }
@@ -151,4 +165,37 @@ func (s StringElement) ListElementValue() *ListElement {
 
 func (s StringElement) SymbolValue() string {
 	return "\"" + s.StringValue() + "\""
+}
+
+// Null
+
+type NullElement struct {
+}
+
+func (n NullElement) IsList() bool {
+	return false
+}
+
+func (n NullElement) IsSymbol() bool {
+	return false
+}
+
+func (n NullElement) NumberValue() float64 {
+	return 0
+}
+
+func (n NullElement) StringValue() string {
+	return "null"
+}
+
+func (n NullElement) Children() []*Element {
+	return nil
+}
+
+func (n NullElement) ListElementValue() *ListElement {
+	return nil
+}
+
+func (n NullElement) SymbolValue() string {
+	return "null"
 }

@@ -1,4 +1,4 @@
-package main
+package core
 
 type Script struct {
 	code List

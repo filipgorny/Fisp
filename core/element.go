@@ -1,6 +1,9 @@
-package main
+package core
 
-import "strconv"
+import (
+	"log"
+	"strconv"
+)
 
 type Element interface {
 	IsList() bool
@@ -8,12 +11,13 @@ type Element interface {
 	StringValue() string
 	ListElementValue() *ListElement
 	Children() []*Element
+	SymbolValue() string
 }
 
 // Symbol
 
 type SymbolElement struct {
-	stringValue string
+	Value string
 }
 
 func (s SymbolElement) IsList() bool {
@@ -25,7 +29,11 @@ func (s SymbolElement) NumberValue() float64 {
 }
 
 func (s SymbolElement) StringValue() string {
-	return s.stringValue
+	return s.Value
+}
+
+func (s SymbolElement) SymbolValue() string {
+	return s.Value
 }
 
 func (s SymbolElement) Children() []*Element {
@@ -61,12 +69,18 @@ func (l ListElement) StringValue() string {
 	return s
 }
 
+func (l ListElement) SymbolValue() string {
+	return l.StringValue()
+}
+
 func (l ListElement) Children() []*Element {
 	var result []*Element
 
-	for _, el := range l.elements {
-		result = append(result, &el)
+	for i, _ := range l.elements {
+		result = append(result, &l.elements[i])
 	}
+
+	log.Print(result)
 
 	return result
 }
@@ -75,10 +89,14 @@ func (l ListElement) ListElementValue() *ListElement {
 	return &l
 }
 
+func (l ListElement) All() []*Element {
+	return l.Children()
+}
+
 // Number
 
 type NumberElement struct {
-	numberValue float64
+	Value float64
 }
 
 func (n NumberElement) IsList() bool {
@@ -86,11 +104,11 @@ func (n NumberElement) IsList() bool {
 }
 
 func (n NumberElement) NumberValue() float64 {
-	return n.numberValue
+	return n.Value
 }
 
 func (n NumberElement) StringValue() string {
-	return strconv.FormatFloat(n.numberValue, 'E', -1, 64)
+	return strconv.FormatFloat(n.Value, 'E', -1, 64)
 }
 
 func (n NumberElement) Children() []*Element {
@@ -101,10 +119,14 @@ func (n NumberElement) ListElementValue() *ListElement {
 	return nil
 }
 
+func (n NumberElement) SymbolValue() string {
+	return n.StringValue()
+}
+
 // String
 
 type StringElement struct {
-	stringValue string
+	Value string
 }
 
 func (s StringElement) IsList() bool {
@@ -116,7 +138,7 @@ func (s StringElement) NumberValue() float64 {
 }
 
 func (s StringElement) StringValue() string {
-	return s.stringValue
+	return s.Value
 }
 
 func (s StringElement) Children() []*Element {
@@ -125,4 +147,8 @@ func (s StringElement) Children() []*Element {
 
 func (s StringElement) ListElementValue() *ListElement {
 	return nil
+}
+
+func (s StringElement) SymbolValue() string {
+	return "\"" + s.StringValue() + "\""
 }

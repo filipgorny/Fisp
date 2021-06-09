@@ -1,11 +1,19 @@
-package main
+package core
 
 type ExprList struct {
 	elements []Element
 	parent   *ExprList
 }
 
-func parse(tokens []LToken) ExprList {
+type Code interface {
+	Elements() []Element
+}
+
+func (e ExprList) Elements() []Element {
+	return e.elements
+}
+
+func Parse(tokens []LToken) ExprList {
 	list := ExprList{}
 	var currentList *ExprList
 	currentList = &list
@@ -27,12 +35,17 @@ func parse(tokens []LToken) ExprList {
 		} else {
 			if token.kind == LT_NUMBER {
 				var el NumberElement
-				el.numberValue = token.numberValue
+				el.Value = token.numberValue
 				currentList.elements = append(currentList.elements, el)
 
 			} else if token.kind == LT_SYMBOL {
 				var el SymbolElement
-				el.stringValue = token.stringValue
+				el.Value = token.stringValue
+
+				currentList.elements = append(currentList.elements, el)
+			} else if token.kind == LT_STRING {
+				var el StringElement
+				el.Value = token.stringValue
 
 				currentList.elements = append(currentList.elements, el)
 			}

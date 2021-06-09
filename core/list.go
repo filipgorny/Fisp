@@ -1,4 +1,4 @@
-package main
+package core
 
 import (
 	"log"
@@ -8,6 +8,8 @@ type List interface {
 	Pop() *Element
 	Push(element Element)
 	Last() *Element
+	All() []*Element
+	First() *Element
 }
 
 func (list *ListElement) Pop() *Element {
@@ -28,4 +30,8 @@ func (list *ListElement) Push(el Element) {
 
 func (list ListElement) Last() *Element {
 	return &list.elements[len(list.elements)-1]
+}
+
+func (list ListElement) First() *Element {
+	return &list.elements[0]
 }

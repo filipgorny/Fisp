@@ -1,4 +1,4 @@
-package main
+package core
 
 import (
 	"regexp"
@@ -20,7 +20,7 @@ type LToken struct {
 	numberValue float64
 }
 
-func tokenize(code string) []LToken {
+func Tokenize(code string) []LToken {
 	// code = strings.ReplaceAll(code, "`(", " (quote ")
 	code = strings.ReplaceAll(code, "(", " ( ")
 	code = strings.ReplaceAll(code, ")", " ) ")

@@ -1,16 +1,10 @@
 package core
 
+import "rpl/element"
+
 type ExprList struct {
-	elements []Element
+	Elements []element.Element
 	parent   *ExprList
-}
-
-type Code interface {
-	Elements() []Element
-}
-
-func (e ExprList) Elements() []Element {
-	return e.elements
 }
 
 func Parse(tokens []LToken) ExprList {
@@ -24,30 +18,30 @@ func Parse(tokens []LToken) ExprList {
 
 			currentList = &newList
 		} else if token.kind == LT_CLOSE_LIST {
-			listElement := ListElement{}
+			listElement := element.ListElement{}
 
-			for _, el := range currentList.elements {
-				listElement.elements = append(listElement.elements, el)
+			for _, el := range currentList.Elements {
+				listElement.Elements = append(listElement.Elements, el)
 			}
 
 			currentList = currentList.parent
-			currentList.elements = append(currentList.elements, listElement)
+			currentList.Elements = append(currentList.Elements, listElement)
 		} else {
 			if token.kind == LT_NUMBER {
-				var el NumberElement
+				var el element.NumberElement
 				el.Value = token.numberValue
-				currentList.elements = append(currentList.elements, el)
+				currentList.Elements = append(currentList.Elements, el)
 
 			} else if token.kind == LT_SYMBOL {
-				var el SymbolElement
+				var el element.SymbolElement
 				el.Value = token.stringValue
 
-				currentList.elements = append(currentList.elements, el)
+				currentList.Elements = append(currentList.Elements, el)
 			} else if token.kind == LT_STRING {
-				var el StringElement
+				var el element.StringElement
 				el.Value = token.stringValue
 
-				currentList.elements = append(currentList.elements, el)
+				currentList.Elements = append(currentList.Elements, el)
 			}
 		}
 	}

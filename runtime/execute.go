@@ -2,16 +2,17 @@ package runtime
 
 import (
 	"log"
-	"wxl/core"
-	"wxl/language"
+	"rpl/core"
+	"rpl/element"
+	"rpl/language"
 )
 
-func evaluateList(spec language.Spec, listElement *core.ListElement) core.Element {
+func evaluateList(spec language.Spec, listElement *element.ListElement) element.Element {
 	firstElement := listElement.First()
 
 	for _, def := range spec.Definitions {
 		if def.Symbol.Value == (*firstElement).StringValue() {
-			var params []*core.Element
+			var params []*element.Element
 
 			for _, param := range listElement.Children() {
 				el := *param
@@ -27,11 +28,11 @@ func evaluateList(spec language.Spec, listElement *core.ListElement) core.Elemen
 		}
 	}
 
-	return core.NullElement{}
+	return element.NullElement{}
 }
 
 func Run(spec language.Spec, codeTree core.ExprList) {
-	for _, element := range codeTree.Elements() {
+	for _, element := range codeTree.Elements {
 		if element.IsList() {
 			result := evaluateList(spec, element.ListElementValue())
 

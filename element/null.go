@@ -30,3 +30,11 @@ func (n NullElement) ListElementValue() *ListElement {
 func (n NullElement) SymbolValue() string {
 	return "null"
 }
+
+func (n NullElement) IsError() bool {
+	return false
+}
+
+func (e NullElement) BoolValue() bool {
+	return false
+}

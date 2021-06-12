@@ -31,3 +31,11 @@ func (s SymbolElement) Children() []*Element {
 func (e SymbolElement) ListElementValue() *ListElement {
 	return nil
 }
+
+func (e SymbolElement) IsError() bool {
+	return false
+}
+
+func (e SymbolElement) BoolValue() bool {
+	return true
+}

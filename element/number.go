@@ -3,7 +3,7 @@ package element
 import "strconv"
 
 type NumberElement struct {
-	Value float64
+	value float64
 }
 
 func (n NumberElement) IsList() bool {
@@ -15,11 +15,11 @@ func (n NumberElement) IsSymbol() bool {
 }
 
 func (n NumberElement) NumberValue() float64 {
-	return n.Value
+	return n.value
 }
 
 func (n NumberElement) StringValue() string {
-	return strconv.FormatFloat(n.Value, 'f', 2, 64)
+	return strconv.FormatFloat(n.value, 'f', 2, 64)
 }
 
 func (n NumberElement) Children() []*Element {
@@ -32,4 +32,12 @@ func (n NumberElement) ListElementValue() *ListElement {
 
 func (n NumberElement) SymbolValue() string {
 	return n.StringValue()
+}
+
+func (n NumberElement) IsError() bool {
+	return false
+}
+
+func (e NumberElement) BoolValue() bool {
+	return e.value > 0
 }

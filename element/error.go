@@ -31,3 +31,7 @@ func (e ErrorElement) ListElementValue() *ListElement {
 func (e ErrorElement) SymbolValue() string {
 	return "ERROR"
 }
+
+func (e ErrorElement) IsError() bool {
+	return true
+}

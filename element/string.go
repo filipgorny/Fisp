@@ -1,7 +1,7 @@
 package element
 
 type StringElement struct {
-	Value string
+	value string
 }
 
 func (s StringElement) IsList() bool {
@@ -17,7 +17,7 @@ func (s StringElement) NumberValue() float64 {
 }
 
 func (s StringElement) StringValue() string {
-	return s.Value
+	return s.value
 }
 
 func (s StringElement) Children() []*Element {
@@ -30,4 +30,12 @@ func (s StringElement) ListElementValue() *ListElement {
 
 func (s StringElement) SymbolValue() string {
 	return "\"" + s.StringValue() + "\""
+}
+
+func (s StringElement) IsError() bool {
+	return false
+}
+
+func (e StringElement) BoolValue() bool {
+	return len(e.value) > 0
 }

@@ -76,3 +76,11 @@ func (list ListElement) Last() *Element {
 func (list ListElement) First() *Element {
 	return &list.Elements[0]
 }
+
+func (list ListElement) IsError() bool {
+	return false
+}
+
+func (e ListElement) BoolValue() bool {
+	return len(e.Elements) > 0
+}

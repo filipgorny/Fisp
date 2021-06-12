@@ -2,12 +2,13 @@ package math
 
 import (
 	"rpl/element"
+	"rpl/flow"
 	"rpl/language"
 )
 
 var Add = language.RplMethod{
 	Symbol: element.SymbolElement{Value: "+"},
-	Call: func(params []*element.Element) language.RplCallResult {
+	Call: func(params []*element.Element, ctx flow.Context) element.Element {
 		var sum = 0.0
 
 		var tokenElement element.Element
@@ -22,13 +23,13 @@ var Add = language.RplMethod{
 			sum += tokenElement.NumberValue()
 		}
 
-		return language.RplCallResult{Element: element.NumberElement{Value: sum}}
+		return element.NumberElement{Value: sum}
 	},
 }
 
 var Substract = language.RplMethod{
 	Symbol: element.SymbolElement{Value: "-"},
-	Call: func(params []*element.Element) language.RplCallResult {
+	Call: func(params []*element.Element, ctx flow.Context) element.Element {
 		var sum = 0.0
 
 		for i, token := range params {
@@ -46,13 +47,13 @@ var Substract = language.RplMethod{
 			sum -= tokenElement.NumberValue()
 		}
 
-		return language.RplCallResult{Element: element.NumberElement{Value: sum}}
+		return element.NumberElement{Value: sum}
 	},
 }
 
 var Divide = language.RplMethod{
 	Symbol: element.SymbolElement{Value: "-"},
-	Call: func(params []*element.Element) language.RplCallResult {
+	Call: func(params []*element.Element, ctx flow.Context) element.Element {
 		var sum = 1.0
 
 		for i, token := range params {
@@ -68,12 +69,12 @@ var Divide = language.RplMethod{
 			}
 
 			if sum == 0 {
-				return language.RplCallResult{Element: element.ErrorElement{Message: "division by 0"}, Success: false}
+				return element.ErrorElement{Message: "division by 0"}
 			}
 
 			sum /= tokenElement.NumberValue()
 		}
 
-		return language.RplCallResult{Element: element.NumberElement{Value: sum}}
+		return element.NumberElement{Value: sum}
 	},
 }

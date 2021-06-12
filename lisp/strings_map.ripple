@@ -1,0 +1,9 @@
+(set names (
+  "aron makej"
+  "blizon modej"
+  "piotr parasiewic"
+))
+
+(map names (fun (n) (
+  (capitalize n)
+)))

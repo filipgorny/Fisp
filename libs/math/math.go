@@ -1,12 +1,12 @@
 package math
 
 import (
-	"rpl/element"
-	"rpl/flow"
-	"rpl/language"
+	"wxl/element"
+	"wxl/flow"
+	"wxl/language"
 )
 
-var Add = language.RplMethod{
+var Add = language.wxlMethod{
 	Symbol: element.SymbolElement{Value: "+"},
 	Call: func(params []*element.Element, ctx flow.Context) element.Element {
 		var sum = 0.0
@@ -27,7 +27,7 @@ var Add = language.RplMethod{
 	},
 }
 
-var Substract = language.RplMethod{
+var Substract = language.wxlMethod{
 	Symbol: element.SymbolElement{Value: "-"},
 	Call: func(params []*element.Element, ctx flow.Context) element.Element {
 		var sum = 0.0
@@ -51,7 +51,7 @@ var Substract = language.RplMethod{
 	},
 }
 
-var Divide = language.RplMethod{
+var Divide = language.wxlMethod{
 	Symbol: element.SymbolElement{Value: "-"},
 	Call: func(params []*element.Element, ctx flow.Context) element.Element {
 		var sum = 1.0

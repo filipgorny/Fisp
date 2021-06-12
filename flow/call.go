@@ -1,5 +1,5 @@
 package flow
 
-import "rpl/element"
+import "wxl/element"
 
 type Call func(params []*element.Element, ctx *Context) element.Element

@@ -1,15 +1,15 @@
 package math
 
 import (
-	"rpl/core"
-	"rpl/element"
-	"rpl/language"
-	"rpl/runtime"
 	"testing"
+	"wxl/core"
+	"wxl/element"
+	"wxl/language"
+	"wxl/runtime"
 )
 
 func runCode(s string) element.Element {
-	spec := language.CreateSpec([]language.RplMethod{
+	spec := language.CreateSpec([]language.wxlMethod{
 		Add,
 		Substract,
 	})

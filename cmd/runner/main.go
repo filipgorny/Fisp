@@ -2,22 +2,22 @@ package main
 
 import (
 	"io/ioutil"
-	"rpl/core"
-	"rpl/language"
-	"rpl/libs/math"
-	"rpl/runtime"
+	"wxl/core"
+	"wxl/language"
+	"wxl/libs/math"
+	"wxl/runtime"
 )
 
 func main() {
 	// arg := os.Args[1]
-	arg := "lisp/test1.rpl"
+	arg := "lisp/test1.wxl"
 	dat, err := ioutil.ReadFile(arg)
 
 	if err != nil {
 		panic(err)
 	}
 
-	spec := language.CreateSpec([]language.RplMethod{
+	spec := language.CreateSpec([]language.wxlMethod{
 		math.Add,
 		math.Substract,
 	})

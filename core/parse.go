@@ -1,6 +1,6 @@
 package core
 
-import "rpl/element"
+import "wxl/element"
 
 type ExprList struct {
 	Elements []element.Element

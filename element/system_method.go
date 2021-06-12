@@ -1,7 +1,7 @@
 package element
 
 import (
-	"rpl/environment"
+	"wxl/environment"
 )
 
 type SystemMethodElement struct {

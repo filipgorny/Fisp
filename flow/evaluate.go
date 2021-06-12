@@ -1,6 +1,6 @@
 package flow
 
-import "rpl/element"
+import "wxl/element"
 
 func evaluate(listElement *element.ListElement, ctx *Context) element.Element {
 	firstElement := listElement.First()

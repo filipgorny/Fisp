@@ -71,14 +71,20 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 			for _, param := range listElement.Children() {
 				el := *param
 
-				// if el.IsSymbol() {
-				// 	elBind := ctx.Lookup(el.SymbolElementValue())
+				if el.IsList() {
+					ctx.Log("Branching list: " + el.StringValue())
+					newCtx := ctx.Branch()
+					el = Evaluate(el.ListElementValue(), newCtx)
+				}
 
-				// 	if elBind.IsElementBind() {
-				// 		ctx.Log("Symbol bind: " + elBind.GetElementValue().StringValue())
-				// 		el = elBind.GetElementValue()
-				// 	}
-				// }
+				if el.IsSymbol() {
+					elBind := ctx.Lookup(el.SymbolElementValue())
+
+					if elBind.IsElementBind() {
+						ctx.Log("Symbol bind: " + elBind.GetElementValue().StringValue())
+						el = elBind.GetElementValue()
+					}
+				}
 
 				params = append(params, &el)
 			}

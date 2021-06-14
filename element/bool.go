@@ -4,6 +4,12 @@ type BoolElement struct {
 	value bool
 }
 
+func NewBoolElement(value bool) BoolElement {
+	return BoolElement{
+		value: value,
+	}
+}
+
 func (e BoolElement) IsList() bool {
 	return false
 }
@@ -12,8 +18,16 @@ func (e BoolElement) IsSymbol() bool {
 	return false
 }
 
+func (e BoolElement) IsNull() bool {
+	return false
+}
+
 func (e BoolElement) NumberValue() float64 {
-	return 1
+	if e.value == true {
+		return 1
+	} else {
+		return 0
+	}
 }
 
 func (e BoolElement) StringValue() string {
@@ -54,4 +68,8 @@ func (e BoolElement) IsFunction() bool {
 
 func (e BoolElement) FunctionElementValue() *FunctionElement {
 	return &FunctionElement{hasName: false, body: ListElement{}, arguments: ListElement{}}
+}
+
+func (e BoolElement) SymbolElementValue() *SymbolElement {
+	return &SymbolElement{Value: "bool"}
 }

@@ -1,5 +1,10 @@
 package element
 
+import (
+	"fmt"
+	"strconv"
+)
+
 type StringElement struct {
 	Value string
 }
@@ -13,7 +18,11 @@ func (s StringElement) IsSymbol() bool {
 }
 
 func (s StringElement) NumberValue() float64 {
-	return 0
+	fmt.Print("VALUE : " + s.Value)
+
+	num, _ := strconv.ParseFloat(s.Value, 64)
+
+	return num
 }
 
 func (s StringElement) StringValue() string {

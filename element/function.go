@@ -29,7 +29,7 @@ func (f FunctionElement) NumberValue() float64 {
 }
 
 func (f FunctionElement) StringValue() string {
-	return f.name
+	return "Function " + f.arguments.StringValue()
 }
 
 func (f FunctionElement) Children() []*Element {

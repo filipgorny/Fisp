@@ -14,7 +14,7 @@ func runCode(s string) element.Element {
 	env := runtime.NewEnvironment([]*directives.Method{
 		&Declare,
 		&math.Add,
-	}, {})
+	}, []*directives.Keyword{})
 
 	code := core.Parse(core.Tokenize(string(s)))
 

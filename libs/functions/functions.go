@@ -22,7 +22,13 @@ var Declare = directives.Keyword{
 
 		first := *params[1]
 		second := *params[2]
-		third := *params[3]
+
+		var third element.Element
+		third = element.NullElement{}
+
+		if len(params) > 3 {
+			third = *params[3]
+		}
 
 		if first.IsSymbol() && second.IsList() && third.IsList() {
 			functionElement = element.NewFunctionElement(
@@ -35,7 +41,7 @@ var Declare = directives.Keyword{
 			currentContext.Declare(*first.SymbolElementValue(), memory.NewElementBind(&functionElement))
 		} else if first.IsList() && second.IsList() {
 			functionElement = element.NewFunctionElement(
-				true,
+				false,
 				first.StringValue(),
 				*first.ListElementValue(),
 				*second.ListElementValue(),

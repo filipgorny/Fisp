@@ -20,8 +20,8 @@ func (s SymbolElement) StringValue() string {
 	return s.Value
 }
 
-func (s SymbolElement) SymbolValue() string {
-	return s.Value
+func (s SymbolElement) SymbolElementValue() *SymbolElement {
+	return &s
 }
 
 func (s SymbolElement) Children() []*Element {
@@ -33,6 +33,10 @@ func (e SymbolElement) ListElementValue() *ListElement {
 }
 
 func (e SymbolElement) IsError() bool {
+	return false
+}
+
+func (e SymbolElement) IsNull() bool {
 	return false
 }
 

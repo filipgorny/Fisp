@@ -28,10 +28,18 @@ func (e ErrorElement) ListElementValue() *ListElement {
 	return nil
 }
 
-func (e ErrorElement) SymbolValue() string {
-	return "ERROR"
+func (e ErrorElement) SymbolElementValue() *SymbolElement {
+	return &SymbolElement{Value: "error"}
 }
 
 func (e ErrorElement) IsError() bool {
 	return true
+}
+
+func (e ErrorElement) IsNull() bool {
+	return false
+}
+
+func (e ErrorElement) BoolValue() bool {
+	return false
 }

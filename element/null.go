@@ -27,12 +27,16 @@ func (n NullElement) ListElementValue() *ListElement {
 	return nil
 }
 
-func (n NullElement) SymbolValue() string {
-	return "null"
+func (n NullElement) SymbolElementValue() *SymbolElement {
+	return &SymbolElement{Value: "null"}
 }
 
 func (n NullElement) IsError() bool {
 	return false
+}
+
+func (e NullElement) IsNull() bool {
+	return true
 }
 
 func (e NullElement) BoolValue() bool {

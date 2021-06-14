@@ -3,8 +3,9 @@ package main
 import (
 	"io/ioutil"
 	"wxl/core"
-	"wxl/language"
+	"wxl/execution"
 	"wxl/libs/math"
+	"wxl/libs/variables"
 	"wxl/runtime"
 )
 
@@ -17,12 +18,13 @@ func main() {
 		panic(err)
 	}
 
-	spec := language.CreateSpec([]language.wxlMethod{
-		math.Add,
-		math.Substract,
+	env := runtime.NewEnvironment([]*runtime.Method{
+		&math.Add,
+		&math.Substract,
+		&variables.Declare,
 	})
 
 	code := core.Parse(core.Tokenize(string(dat)))
 
-	runtime.Run(spec, code)
+	execution.Run(env, code)
 }

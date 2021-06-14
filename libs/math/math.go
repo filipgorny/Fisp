@@ -2,13 +2,12 @@ package math
 
 import (
 	"wxl/element"
-	"wxl/flow"
-	"wxl/language"
+	"wxl/runtime"
 )
 
-var Add = language.wxlMethod{
+var Add = runtime.Method{
 	Symbol: element.SymbolElement{Value: "+"},
-	Call: func(params []*element.Element, ctx flow.Context) element.Element {
+	Call: func(params []*element.Element, ctx *runtime.Context) element.Element {
 		var sum = 0.0
 
 		var tokenElement element.Element
@@ -27,9 +26,9 @@ var Add = language.wxlMethod{
 	},
 }
 
-var Substract = language.wxlMethod{
+var Substract = runtime.Method{
 	Symbol: element.SymbolElement{Value: "-"},
-	Call: func(params []*element.Element, ctx flow.Context) element.Element {
+	Call: func(params []*element.Element, ctx *runtime.Context) element.Element {
 		var sum = 0.0
 
 		for i, token := range params {
@@ -51,9 +50,9 @@ var Substract = language.wxlMethod{
 	},
 }
 
-var Divide = language.wxlMethod{
+var Divide = runtime.Method{
 	Symbol: element.SymbolElement{Value: "-"},
-	Call: func(params []*element.Element, ctx flow.Context) element.Element {
+	Call: func(params []*element.Element, ctx *runtime.Context) element.Element {
 		var sum = 1.0
 
 		for i, token := range params {

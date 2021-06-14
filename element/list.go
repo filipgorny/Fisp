@@ -25,12 +25,16 @@ func (l ListElement) StringValue() string {
 	return s
 }
 
-func (l ListElement) SymbolValue() string {
-	return l.StringValue()
+func (l ListElement) SymbolElementValue() *SymbolElement {
+	return &SymbolElement{Value: "list"}
 }
 
 func (l ListElement) IsSymbol() bool {
 	return true
+}
+
+func (e ListElement) IsNull() bool {
+	return false
 }
 
 func (l ListElement) Children() []*Element {

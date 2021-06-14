@@ -2,27 +2,25 @@ package variables
 
 import (
 	"wxl/element"
-	"wxl/flow"
-	"wxl/language"
+	"wxl/runtime"
 )
 
-var Declare = language.wxlMethod{
+var Declare = runtime.Method{
 	Symbol: element.SymbolElement{Value: "set"},
-	Call: func(params []*element.Element, ctx flow.Context) element.Element {
-		var sum = 0.0
+	Call: func(params []*element.Element, ctx *runtime.Context) element.Element {
+		if len(params) < 3 {
+			ctx.Error("Not enough arguments for method `set`.")
 
-		var tokenElement element.Element
-
-		for i, token := range params {
-			tokenElement = *token
-
-			if i == 0 {
-				continue
-			}
-
-			sum += tokenElement.NumberValue()
+			return element.ErrorElement{}
 		}
 
-		return element.NumberElement{Value: sum}
+		name := *params[1]
+		value := params[2]
+
+		ctx.Log("Assigning " + name.StringValue() + " to " + (*value).StringValue())
+
+		ctx.Declare(*name.SymbolElementValue(), runtime.NewElementBind(value))
+
+		return *value
 	},
 }

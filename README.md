@@ -1,4 +1,4 @@
-# Open Sourced parser and interpreter of wxl (Workflex lisp language)
+# Custom Lisp language parsing and evaluating made in Go lang.
 
 ## *Work in progress. Currently rewriting from Typescript to Go lang.*
 

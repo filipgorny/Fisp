@@ -52,7 +52,7 @@ var Substract = directives.Method{
 }
 
 var Divide = directives.Method{
-	Symbol: element.SymbolElement{Value: "-"},
+	Symbol: element.SymbolElement{Value: "/"},
 	Call: func(params []*element.Element, ctx *language.Context) element.Element {
 		var sum = 1.0
 
@@ -73,6 +73,30 @@ var Divide = directives.Method{
 			}
 
 			sum /= tokenElement.NumberValue()
+		}
+
+		return element.NumberElement{Value: sum}
+	},
+}
+
+var Multiple = directives.Method{
+	Symbol: element.SymbolElement{Value: "*"},
+	Call: func(params []*element.Element, ctx *language.Context) element.Element {
+		var sum = 1.0
+
+		for i, token := range params {
+			tokenElement := *token
+
+			if i == 0 {
+				continue
+			}
+
+			if i == 1 {
+				sum = tokenElement.NumberValue()
+				continue
+			}
+
+			sum *= tokenElement.NumberValue()
 		}
 
 		return element.NumberElement{Value: sum}

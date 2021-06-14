@@ -3,7 +3,9 @@ package main
 import (
 	"io/ioutil"
 	"wxl/core"
+	"wxl/directives"
 	"wxl/execution"
+	"wxl/libs/functions"
 	"wxl/libs/math"
 	"wxl/libs/variables"
 	"wxl/runtime"
@@ -18,10 +20,12 @@ func main() {
 		panic(err)
 	}
 
-	env := runtime.NewEnvironment([]*runtime.Method{
+	env := runtime.NewEnvironment([]*directives.Method{
 		&math.Add,
 		&math.Substract,
 		&variables.Declare,
+	}, []*directives.Keyword{
+		&functions.Declare,
 	})
 
 	code := core.Parse(core.Tokenize(string(dat)))

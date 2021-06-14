@@ -31,6 +31,14 @@ func (n NullElement) SymbolElementValue() *SymbolElement {
 	return &SymbolElement{Value: "null"}
 }
 
+func (n NullElement) IsFunction() bool {
+	return false
+}
+
+func (n NullElement) FunctionElementValue() *FunctionElement {
+	return &FunctionElement{hasName: false, body: ListElement{}, arguments: ListElement{}}
+}
+
 func (n NullElement) IsError() bool {
 	return false
 }

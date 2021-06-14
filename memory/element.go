@@ -1,7 +1,9 @@
-package runtime
+package memory
 
 import (
+	"wxl/directives"
 	"wxl/element"
+	"wxl/language"
 )
 
 type ElementBind struct {
@@ -22,17 +24,29 @@ func (bind ElementBind) IsMethodBind() bool {
 	return false
 }
 
+func (bind ElementBind) IsKeywordBind() bool {
+	return false
+}
+
 func (bind ElementBind) GetElementValue() element.Element {
 	return *bind.element
 }
 
-func (bind ElementBind) GetMethodValue() Method {
+func (bind ElementBind) GetMethodValue() language.Method {
 	el := *bind.element
 	s := el.SymbolElementValue()
 
-	return Method{
+	return directives.Method{
 		Symbol: *s,
-		Call: func(params []*element.Element, ctx *Context) element.Element {
+		Call: func(params []*element.Element, ctx *language.Context) element.Element {
+			return *params[len(params)-1]
+		},
+	}
+}
+
+func (bind ElementBind) GetKeywordValue() language.Keyword {
+	return directives.Keyword{
+		Call: func(params []*element.Element, ctx *language.Context) element.Element {
 			return *params[len(params)-1]
 		},
 	}

@@ -32,6 +32,14 @@ func (s StringElement) SymbolElementValue() *SymbolElement {
 	return &SymbolElement{s.StringValue()}
 }
 
+func (s StringElement) IsFunction() bool {
+	return false
+}
+
+func (s StringElement) FunctionElementValue() *FunctionElement {
+	return &FunctionElement{hasName: false, body: ListElement{}, arguments: ListElement{}}
+}
+
 func (s StringElement) IsError() bool {
 	return false
 }

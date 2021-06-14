@@ -1,15 +1,19 @@
 package variables
 
 import (
+	"wxl/directives"
 	"wxl/element"
-	"wxl/runtime"
+	"wxl/language"
+	"wxl/memory"
 )
 
-var Declare = runtime.Method{
+var Declare = directives.Method{
 	Symbol: element.SymbolElement{Value: "set"},
-	Call: func(params []*element.Element, ctx *runtime.Context) element.Element {
+	Call: func(params []*element.Element, ctx *language.Context) element.Element {
+		currentContext := *ctx
+
 		if len(params) < 3 {
-			ctx.Error("Not enough arguments for method `set`.")
+			currentContext.Error("Not enough arguments for method `set`.")
 
 			return element.ErrorElement{}
 		}
@@ -17,9 +21,9 @@ var Declare = runtime.Method{
 		name := *params[1]
 		value := params[2]
 
-		ctx.Log("Assigning " + name.StringValue() + " to " + (*value).StringValue())
+		currentContext.Log("Assigning " + name.StringValue() + " to " + (*value).StringValue())
 
-		ctx.Declare(*name.SymbolElementValue(), runtime.NewElementBind(value))
+		currentContext.Declare(*name.SymbolElementValue(), memory.NewElementBind(value))
 
 		return *value
 	},

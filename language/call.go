@@ -1,7 +1,5 @@
-package runtime
+package language
 
-import (
-	"wxl/element"
-)
+import "wxl/element"
 
 type Call func(params []*element.Element, ctx *Context) element.Element

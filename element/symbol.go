@@ -24,6 +24,14 @@ func (s SymbolElement) SymbolElementValue() *SymbolElement {
 	return &s
 }
 
+func (s SymbolElement) IsFunction() bool {
+	return false
+}
+
+func (s SymbolElement) FunctionElementValue() *FunctionElement {
+	return &FunctionElement{hasName: false, body: ListElement{}, arguments: ListElement{}}
+}
+
 func (s SymbolElement) Children() []*Element {
 	return nil
 }

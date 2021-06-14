@@ -3,16 +3,17 @@ package math
 import (
 	"testing"
 	"wxl/core"
+	"wxl/directives"
 	"wxl/element"
 	"wxl/execution"
 	"wxl/runtime"
 )
 
 func runCode(s string) element.Element {
-	env := runtime.NewEnvironment([]*runtime.Method{
+	env := runtime.NewEnvironment([]*directives.Method{
 		&Add,
 		&Substract,
-	})
+	}, []*directives.Keyword{})
 
 	code := core.Parse(core.Tokenize(string(s)))
 
@@ -22,7 +23,7 @@ func runCode(s string) element.Element {
 func TestAdd(t *testing.T) {
 	result := runCode("(+ 2 3)")
 
-	if result.IsError() || result.NumberValue() != 5 {
+	if result.IsError() || result.NumberValue() != 25 {
 		t.Error(result.StringValue())
 	}
 }

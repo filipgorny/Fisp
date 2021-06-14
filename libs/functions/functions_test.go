@@ -1,4 +1,4 @@
-package variables
+package functions
 
 import (
 	"testing"
@@ -7,14 +7,17 @@ import (
 	"wxl/element"
 	"wxl/execution"
 	"wxl/libs/math"
+	"wxl/libs/variables"
 	"wxl/runtime"
 )
 
 func runCode(s string) element.Element {
 	env := runtime.NewEnvironment([]*directives.Method{
-		&Declare,
 		&math.Add,
-	}, {})
+		&variables.Declare,
+	}, []*directives.Keyword{
+		&Declare,
+	})
 
 	code := core.Parse(core.Tokenize(string(s)))
 
@@ -22,9 +25,9 @@ func runCode(s string) element.Element {
 }
 
 func TestSet(t *testing.T) {
-	result := runCode("(set x 10) (+ 20 x)")
+	result := runCode("(fun test (a b) ((set x 30) (+ a b x))) (test 10 20)")
 
-	if result.IsError() || result.NumberValue() != 30 {
+	if result.IsError() || result.NumberValue() != 60 {
 		t.Error(result.StringValue())
 	}
 }

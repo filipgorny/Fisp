@@ -1,13 +1,14 @@
 package math
 
 import (
+	"wxl/directives"
 	"wxl/element"
-	"wxl/runtime"
+	"wxl/language"
 )
 
-var Add = runtime.Method{
+var Add = directives.Method{
 	Symbol: element.SymbolElement{Value: "+"},
-	Call: func(params []*element.Element, ctx *runtime.Context) element.Element {
+	Call: func(params []*element.Element, ctx *language.Context) element.Element {
 		var sum = 0.0
 
 		var tokenElement element.Element
@@ -26,9 +27,9 @@ var Add = runtime.Method{
 	},
 }
 
-var Substract = runtime.Method{
+var Substract = directives.Method{
 	Symbol: element.SymbolElement{Value: "-"},
-	Call: func(params []*element.Element, ctx *runtime.Context) element.Element {
+	Call: func(params []*element.Element, ctx *language.Context) element.Element {
 		var sum = 0.0
 
 		for i, token := range params {
@@ -50,9 +51,9 @@ var Substract = runtime.Method{
 	},
 }
 
-var Divide = runtime.Method{
+var Divide = directives.Method{
 	Symbol: element.SymbolElement{Value: "-"},
-	Call: func(params []*element.Element, ctx *runtime.Context) element.Element {
+	Call: func(params []*element.Element, ctx *language.Context) element.Element {
 		var sum = 1.0
 
 		for i, token := range params {

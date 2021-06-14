@@ -29,6 +29,14 @@ func (l ListElement) SymbolElementValue() *SymbolElement {
 	return &SymbolElement{Value: "list"}
 }
 
+func (l ListElement) IsFunction() bool {
+	return false
+}
+
+func (l ListElement) FunctionElementValue() *FunctionElement {
+	return &FunctionElement{hasName: false, body: ListElement{}, arguments: ListElement{}}
+}
+
 func (l ListElement) IsSymbol() bool {
 	return true
 }
@@ -74,10 +82,26 @@ func (list *ListElement) Push(el Element) {
 }
 
 func (list ListElement) Last() *Element {
+	if len(list.Elements) < 1 {
+		var null Element
+
+		null = NullElement{}
+
+		return &null
+	}
+
 	return &list.Elements[len(list.Elements)-1]
 }
 
 func (list ListElement) First() *Element {
+	if len(list.Elements) < 1 {
+		var null Element
+
+		null = NullElement{}
+
+		return &null
+	}
+
 	return &list.Elements[0]
 }
 

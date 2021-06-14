@@ -47,3 +47,11 @@ func (e BoolElement) IsError() bool {
 func (e BoolElement) BoolValue() bool {
 	return e.value
 }
+
+func (e BoolElement) IsFunction() bool {
+	return false
+}
+
+func (e BoolElement) FunctionElementValue() *FunctionElement {
+	return &FunctionElement{hasName: false, body: ListElement{}, arguments: ListElement{}}
+}

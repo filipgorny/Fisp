@@ -34,6 +34,14 @@ func (n NumberElement) SymbolElementValue() *SymbolElement {
 	return &SymbolElement{n.StringValue()}
 }
 
+func (n NumberElement) IsFunction() bool {
+	return false
+}
+
+func (n NumberElement) FunctionElementValue() *FunctionElement {
+	return &FunctionElement{hasName: false, body: ListElement{}, arguments: ListElement{}}
+}
+
 func (n NumberElement) IsError() bool {
 	return false
 }

@@ -43,3 +43,11 @@ func (e ErrorElement) IsNull() bool {
 func (e ErrorElement) BoolValue() bool {
 	return false
 }
+
+func (e ErrorElement) IsFunction() bool {
+	return false
+}
+
+func (e ErrorElement) FunctionElementValue() *FunctionElement {
+	return &FunctionElement{hasName: false, body: ListElement{}, arguments: ListElement{}}
+}

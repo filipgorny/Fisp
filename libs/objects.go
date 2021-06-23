@@ -1,10 +1,9 @@
-package objects
+package libs
 
 import (
 	"wxl/directives"
 	"wxl/element"
 	"wxl/language"
-	"wxl/libs/helpers"
 	"wxl/memory"
 )
 
@@ -16,11 +15,11 @@ var Define = directives.Method{
 		secondArgument := *params[2]
 
 		if !firstArgument.IsSymbol() {
-			return helpers.Error(ctx, "First argument must be a symbol.")
+			return Error(ctx, "First argument must be a symbol.")
 		}
 
 		if len(params) < 3 {
-			return helpers.Error(ctx, "Not enough arguments.")
+			return Error(ctx, "Not enough arguments.")
 		}
 
 		object := *secondArgument.ObjectElementValue().Object()

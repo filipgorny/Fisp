@@ -1,4 +1,4 @@
-package functions
+package libs
 
 import (
 	"wxl/directives"
@@ -7,7 +7,7 @@ import (
 	"wxl/memory"
 )
 
-var Declare = directives.Keyword{
+var Fun = directives.Keyword{
 	Symbol: element.SymbolElement{Value: "fun"},
 	Call: func(params []*element.Element, ctx *language.Context) element.Element {
 		currentContext := *ctx

@@ -1,4 +1,4 @@
-// package resource
+package libs
 
 // import (
 // 	"testing"

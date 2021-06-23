@@ -1,4 +1,4 @@
-// package resource
+package libs
 
 // import (
 // 	"wxl/directives"
@@ -16,7 +16,7 @@
 // 		secondArgument := *params[2]
 
 // 		if !firstArgument.IsPath() {
-// 			return helpers.Error(ctx, "First argument must be a path.")
+// 			return Error(ctx, "First argument must be a path.")
 // 		}
 
 // 		var subject resource.Resource
@@ -35,7 +35,7 @@
 // 			subject = object.(resource.Resource)
 
 // 			if subject == nil {
-// 				return helpers.Error(ctx, "Invalid subject.")
+// 				return Error(ctx, "Invalid subject.")
 // 			}
 // 		}
 
@@ -53,11 +53,11 @@
 // // 		secondArgument := *params[2]
 
 // // 		if !firstArgument.IsSymbol() {
-// // 			return helpers.Error(ctx, "First argument must be a symbol.")
+// // 			return Error(ctx, "First argument must be a symbol.")
 // // 		}
 
 // // 		if len(params) < 3 {
-// // 			return helpers.Error(ctx, "Not enough arguments.")
+// // 			return Error(ctx, "Not enough arguments.")
 // // 		}
 
 // // 		object := *secondArgument.ObjectElementValue().Object()

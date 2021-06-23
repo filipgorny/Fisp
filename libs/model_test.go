@@ -1,26 +1,10 @@
-package model
+package libs
 
 import (
 	"fmt"
 	"testing"
-	"wxl/core"
-	"wxl/directives"
-	"wxl/element"
-	"wxl/execution"
 	"wxl/model"
-	"wxl/runtime"
 )
-
-func runCode(s string) element.Element {
-	env := runtime.NewEnvironment([]*directives.Method{
-		&Model,
-		&Entity,
-	}, []*directives.Keyword{})
-
-	code := core.Parse(core.Tokenize(string(s)))
-
-	return execution.Run(env, code)
-}
 
 func TestEntity(t *testing.T) {
 	result := runCode(`

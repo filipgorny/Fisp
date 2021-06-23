@@ -1,27 +1,8 @@
-package condition
+package libs
 
 import (
 	"testing"
-	"wxl/core"
-	"wxl/directives"
-	"wxl/element"
-	"wxl/execution"
-	"wxl/runtime"
 )
-
-func runCode(s string) element.Element {
-	env := runtime.NewEnvironment([]*directives.Method{
-		&Equal,
-		&NotEqual,
-		&LeftBigger,
-		&RightBigger,
-		&IfTrue,
-	}, []*directives.Keyword{})
-
-	code := core.Parse(core.Tokenize(string(s)))
-
-	return execution.Run(env, code)
-}
 
 func TestEqual(t *testing.T) {
 	result := runCode("(== 2 2)")

@@ -1,4 +1,4 @@
-package condition
+package libs
 
 import (
 	"wxl/directives"

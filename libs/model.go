@@ -1,11 +1,10 @@
-package model
+package libs
 
 import (
 	"fmt"
 	"wxl/directives"
 	"wxl/element"
 	"wxl/language"
-	"wxl/libs/helpers"
 	"wxl/model"
 )
 
@@ -16,7 +15,7 @@ var Model = directives.Method{
 		modelName := *params[1]
 
 		if !modelName.IsSymbol() {
-			return helpers.Error(ctx, "First argument must be a string.")
+			return Error(ctx, "First argument must be a string.")
 		}
 
 		fields := []*model.Field{}
@@ -29,13 +28,13 @@ var Model = directives.Method{
 			el := *param
 
 			if !el.IsRecord() {
-				return helpers.Error(ctx, "Invalid model defintion, expected fields records.")
+				return Error(ctx, "Invalid model defintion, expected fields records.")
 			}
 
 			typeName := el.RecordElementValue().Value().StringValue()
 
 			if !model.ValidTypeName(typeName) {
-				return helpers.Error(ctx, "Invalid type '"+typeName+"' .")
+				return Error(ctx, "Invalid type '"+typeName+"' .")
 			}
 
 			field := model.NewField(el.RecordElementValue().Label(), model.TypeByName(typeName))
@@ -44,7 +43,7 @@ var Model = directives.Method{
 		}
 
 		if len(fields) < 1 {
-			return helpers.Error(ctx, "At least one field must be declared for a model.")
+			return Error(ctx, "At least one field must be declared for a model.")
 		}
 
 		model := model.NewModel(modelName.StringValue(), fields)
@@ -61,14 +60,14 @@ var Entity = directives.Method{
 
 		if !modelDef.IsObject() {
 			fmt.Print(modelDef)
-			return helpers.Error(ctx, "First argument must be an objet of model.")
+			return Error(ctx, "First argument must be an objet of model.")
 		}
 
 		modelDefObj := *modelDef.ObjectElementValue().Object()
 		modelObj, ok := modelDefObj.(model.Model)
 
 		if !ok {
-			return helpers.Error(ctx, "First argument must be a model.")
+			return Error(ctx, "First argument must be a model.")
 		}
 
 		var attributes []*model.Attribute
@@ -81,14 +80,14 @@ var Entity = directives.Method{
 			el := *param
 
 			if !el.IsRecord() {
-				return helpers.Error(ctx, "Invalid entity defintion, expected field record.")
+				return Error(ctx, "Invalid entity defintion, expected field record.")
 			}
 
 			fieldName := el.RecordElementValue().Label()
 			field := modelObj.Field(fieldName)
 
 			if !field.Defined {
-				return helpers.Error(ctx, "Field "+fieldName+", doesn't exists in the model.")
+				return Error(ctx, "Field "+fieldName+", doesn't exists in the model.")
 			}
 
 			value := el.RecordElementValue().Value()
@@ -96,7 +95,7 @@ var Entity = directives.Method{
 			fmt.Print(value)
 
 			if !field.Type.Validate(value) {
-				return helpers.Error(ctx, "Invalid value for field "+fieldName+": "+value.StringValue())
+				return Error(ctx, "Invalid value for field "+fieldName+": "+value.StringValue())
 			}
 
 			attribute := model.NewAttribute(*field, value)

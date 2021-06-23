@@ -1,4 +1,4 @@
-package variables
+package libs
 
 import (
 	"wxl/directives"

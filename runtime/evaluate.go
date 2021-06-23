@@ -9,20 +9,16 @@ import (
 func Evaluate(listElement *element.ListElement, ctx language.Context) element.Element {
 	firstElement := *listElement.First()
 
-	ctx.Log("First element: " + firstElement.StringValue())
-
 	if firstElement.IsSymbol() {
 		bind := ctx.Lookup(firstElement.SymbolElementValue())
 
 		if bind.IsMethodBind() {
-			ctx.Log("method bind: " + bind.GetMethodValue().GetSymbol().Value)
 			var params []*element.Element
 
 			for _, param := range listElement.Children() {
 				el := *param
 
 				if el.IsList() {
-					ctx.Log("Branching list: " + el.StringValue())
 					newCtx := ctx.Branch()
 					el = Evaluate(el.ListElementValue(), newCtx)
 				}
@@ -31,7 +27,6 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 					elBind := ctx.Lookup(el.SymbolElementValue())
 
 					if elBind.IsElementBind() {
-						ctx.Log("Symbol bind: " + elBind.GetElementValue().StringValue())
 						el = elBind.GetElementValue()
 					}
 				}
@@ -43,7 +38,6 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 		}
 
 		if bind.IsKeywordBind() {
-			ctx.Log("keyword bind: " + bind.GetMethodValue().GetSymbol().Value)
 			var params []*element.Element
 
 			for _, param := range listElement.Children() {
@@ -54,14 +48,10 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 
 			bindResult := bind.GetKeywordValue().GetCall()(params, &ctx)
 
-			ctx.Log("Keyword exec result: " + bindResult.StringValue())
-
 			return bindResult
 		}
 
 		if bind.GetElementValue().IsFunction() {
-			ctx.Log("function bind: " + bind.GetMethodValue().GetSymbol().Value)
-
 			return EvaluateFun(*bind.GetElementValue().FunctionElementValue(), listElement, ctx)
 		}
 	}
@@ -69,7 +59,6 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 	// anonymous function call
 
 	if firstElement.IsFunction() {
-		ctx.Log("Running anonymouse fun: " + firstElement.StringValue())
 		newCtx := ctx.Branch()
 		return EvaluateFun(*firstElement.FunctionElementValue(), listElement, newCtx)
 	}
@@ -80,18 +69,13 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 
 	last = *listElement
 
-	ctx.Log("Last el: " + last.StringValue())
-
 	for last.IsList() {
-		ctx.Log("Last el is a list, looping: " + last.StringValue())
-
 		result := element.ListElement{}
 
 		for _, param := range listElement.Children() {
 			el := *param
 
 			if el.IsList() {
-				ctx.Log("Branching list: " + el.StringValue())
 				newCtx := ctx.Branch()
 				el = Evaluate(el.ListElementValue(), newCtx)
 			}
@@ -100,7 +84,6 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 				elBind := ctx.Lookup(el.SymbolElementValue())
 
 				if elBind.IsElementBind() {
-					ctx.Log("Symbol bind: " + elBind.GetElementValue().StringValue())
 					el = elBind.GetElementValue()
 				}
 			}
@@ -110,8 +93,6 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 
 		last = *result.Last()
 	}
-
-	ctx.Log("Last is not a list, returing " + last.StringValue())
 
 	return last
 }
@@ -123,7 +104,6 @@ func EvaluateFun(functionElement element.FunctionElement, listElement *element.L
 		el := *param
 
 		if el.IsList() {
-			ctx.Log("Branching list: " + el.StringValue())
 			newCtx := ctx.Branch()
 			el = Evaluate(el.ListElementValue(), newCtx)
 		}
@@ -132,15 +112,12 @@ func EvaluateFun(functionElement element.FunctionElement, listElement *element.L
 			elBind := ctx.Lookup(el.SymbolElementValue())
 
 			if elBind.IsElementBind() {
-				ctx.Log("Symbol bind: " + elBind.GetElementValue().StringValue())
 				el = elBind.GetElementValue()
 			}
 		}
 
 		params = append(params, &el)
 	}
-
-	ctx.Log("Function exec")
 
 	functionCtx := ctx.Branch()
 
@@ -150,8 +127,6 @@ func EvaluateFun(functionElement element.FunctionElement, listElement *element.L
 
 		el := *children[i]
 		functionCtx.Declare(*el.SymbolElementValue(), memory.NewElementBind(params[i+1]))
-
-		ctx.Log("bind for function : " + el.StringValue() + ", " + (*params[i+1]).StringValue())
 	}
 
 	return Evaluate(functionElement.GetBody().ListElementValue(), functionCtx)

@@ -1,15 +1,29 @@
 package element
 
 import (
-	"fmt"
 	"strconv"
+	"wxl/resource"
 )
 
 type StringElement struct {
 	Value string
 }
 
+func NewStringElement(value string) StringElement {
+	return StringElement{
+		Value: value,
+	}
+}
+
 func (s StringElement) IsList() bool {
+	return false
+}
+
+func (s StringElement) IsString() bool {
+	return true
+}
+
+func (e StringElement) IsNumber() bool {
 	return false
 }
 
@@ -18,8 +32,6 @@ func (s StringElement) IsSymbol() bool {
 }
 
 func (s StringElement) NumberValue() float64 {
-	fmt.Print("VALUE : " + s.Value)
-
 	num, _ := strconv.ParseFloat(s.Value, 64)
 
 	return num
@@ -59,4 +71,40 @@ func (e StringElement) IsNull() bool {
 
 func (e StringElement) BoolValue() bool {
 	return len(e.Value) > 0
+}
+
+// object
+
+func (o StringElement) IsObject() bool {
+	return false
+}
+
+func (o StringElement) ObjectElementValue() *ObjectElement {
+	return &ObjectElement{}
+}
+
+func (e StringElement) StringElementValue() *StringElement {
+	return &e
+}
+
+func (e StringElement) NumberElementValue() *NumberElement {
+	num, _ := strconv.ParseFloat(e.Value, 64)
+
+	return &NumberElement{Value: num}
+}
+
+func (e StringElement) IsRecord() bool {
+	return false
+}
+
+func (e StringElement) RecordElementValue() *RecordElement {
+	return &RecordElement{value: e}
+}
+
+func (e StringElement) IsPath() bool {
+	return false
+}
+
+func (e StringElement) PathElementValue() *PathElement {
+	return &PathElement{path: resource.NewPath([]string{e.StringValue()})}
 }

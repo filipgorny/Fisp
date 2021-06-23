@@ -7,7 +7,7 @@ import (
 )
 
 var Equal = directives.Method{
-	Symbol: element.SymbolElement{Value: "="},
+	Symbol: element.SymbolElement{Value: "=="},
 	Call: func(params []*element.Element, ctx *language.Context) element.Element {
 		ctxCurr := *ctx
 

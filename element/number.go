@@ -10,6 +10,14 @@ func (n NumberElement) IsList() bool {
 	return false
 }
 
+func (s NumberElement) IsString() bool {
+	return false
+}
+
+func (e NumberElement) IsNumber() bool {
+	return true
+}
+
 func (n NumberElement) IsSymbol() bool {
 	return true
 }
@@ -52,4 +60,38 @@ func (e NumberElement) IsNull() bool {
 
 func (e NumberElement) BoolValue() bool {
 	return e.Value > 0
+}
+
+// object
+
+func (o NumberElement) IsObject() bool {
+	return false
+}
+
+func (o NumberElement) ObjectElementValue() *ObjectElement {
+	return &ObjectElement{}
+}
+
+func (e NumberElement) StringElementValue() *StringElement {
+	return &StringElement{Value: strconv.FormatFloat(e.Value, 'f', 2, 64)}
+}
+
+func (e NumberElement) NumberElementValue() *NumberElement {
+	return &e
+}
+
+func (e NumberElement) IsRecord() bool {
+	return false
+}
+
+func (e NumberElement) RecordElementValue() *RecordElement {
+	return &RecordElement{value: e}
+}
+
+func (e NumberElement) IsPath() bool {
+	return false
+}
+
+func (e NumberElement) PathElementValue() *PathElement {
+	return &PathElement{}
 }

@@ -25,6 +25,10 @@ func (l ListElement) StringValue() string {
 	return s
 }
 
+func (e ListElement) IsNumber() bool {
+	return false
+}
+
 func (l ListElement) SymbolElementValue() *SymbolElement {
 	return &SymbolElement{Value: "list"}
 }
@@ -41,6 +45,10 @@ func (l ListElement) IsSymbol() bool {
 	return true
 }
 
+func (s ListElement) IsString() bool {
+	return false
+}
+
 func (e ListElement) IsNull() bool {
 	return false
 }
@@ -48,7 +56,7 @@ func (e ListElement) IsNull() bool {
 func (l ListElement) Children() []*Element {
 	var result []*Element
 
-	for i, _ := range l.Elements {
+	for i := range l.Elements {
 		result = append(result, &l.Elements[i])
 	}
 
@@ -111,4 +119,38 @@ func (list ListElement) IsError() bool {
 
 func (e ListElement) BoolValue() bool {
 	return len(e.Elements) > 0
+}
+
+// object
+
+func (o ListElement) IsObject() bool {
+	return false
+}
+
+func (o ListElement) ObjectElementValue() *ObjectElement {
+	return &ObjectElement{}
+}
+
+func (e ListElement) StringElementValue() *StringElement {
+	return &StringElement{Value: "list"}
+}
+
+func (e ListElement) NumberElementValue() *NumberElement {
+	return &NumberElement{Value: 0}
+}
+
+func (e ListElement) IsRecord() bool {
+	return false
+}
+
+func (e ListElement) RecordElementValue() *RecordElement {
+	return &RecordElement{value: e}
+}
+
+func (e ListElement) IsPath() bool {
+	return false
+}
+
+func (e ListElement) PathElementValue() *PathElement {
+	return &PathElement{}
 }

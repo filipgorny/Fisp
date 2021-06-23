@@ -40,17 +40,11 @@ func (l *Log) Flush() {
 		}
 	}
 
-	fmt.Println()
-	fmt.Println("Info: ")
-
 	for _, entry := range l.entries {
 		if entry.kind == LOG_INFO {
 			fmt.Println("* " + entry.message)
 		}
 	}
-
-	fmt.Println()
-	fmt.Println("Result: ")
 
 	for _, entry := range l.entries {
 		if entry.kind == LOG_RESULT {

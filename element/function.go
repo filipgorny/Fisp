@@ -20,6 +20,14 @@ func (f FunctionElement) IsList() bool {
 	return false
 }
 
+func (s FunctionElement) IsString() bool {
+	return false
+}
+
+func (e FunctionElement) IsNumber() bool {
+	return false
+}
+
 func (f FunctionElement) IsSymbol() bool {
 	return false
 }
@@ -74,4 +82,38 @@ func (f FunctionElement) GetArguments() ListElement {
 
 func (f FunctionElement) GetBody() ListElement {
 	return f.body
+}
+
+// object
+
+func (o FunctionElement) IsObject() bool {
+	return false
+}
+
+func (o FunctionElement) ObjectElementValue() *ObjectElement {
+	return &ObjectElement{}
+}
+
+func (e FunctionElement) StringElementValue() *StringElement {
+	return &StringElement{Value: e.name}
+}
+
+func (e FunctionElement) NumberElementValue() *NumberElement {
+	return &NumberElement{Value: 0}
+}
+
+func (e FunctionElement) IsRecord() bool {
+	return false
+}
+
+func (e FunctionElement) RecordElementValue() *RecordElement {
+	return &RecordElement{value: e}
+}
+
+func (e FunctionElement) IsPath() bool {
+	return false
+}
+
+func (e FunctionElement) PathElementValue() *PathElement {
+	return &PathElement{}
 }

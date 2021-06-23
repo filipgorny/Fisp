@@ -1,10 +1,20 @@
 package core
 
-import "wxl/element"
+import (
+	"strings"
+	"wxl/element"
+	"wxl/resource"
+)
 
 type ExprList struct {
 	Elements []element.Element
 	parent   *ExprList
+}
+
+type CurrentRecord struct {
+	opened bool
+	label  string
+	isList bool
 }
 
 func Parse(tokens []LToken) ExprList {
@@ -12,34 +22,59 @@ func Parse(tokens []LToken) ExprList {
 	var currentList *ExprList
 	currentList = &list
 
+	currentRecord := CurrentRecord{}
+
 	for _, token := range tokens {
 		if token.kind == LT_OPEN_LIST {
 			newList := ExprList{parent: currentList}
 
 			currentList = &newList
-		} else if token.kind == LT_CLOSE_LIST {
-			listElement := element.ListElement{}
 
-			for _, el := range currentList.Elements {
-				listElement.Elements = append(listElement.Elements, el)
+			if currentRecord.opened {
+				currentRecord.isList = true
+			}
+		} else {
+			var el element.Element
+
+			if token.kind == LT_CLOSE_LIST {
+				listElement := element.ListElement{}
+
+				for _, el := range currentList.Elements {
+					listElement.Elements = append(listElement.Elements, el)
+				}
+
+				currentList = currentList.parent
+
+				el = listElement
+
+				if !currentRecord.isList {
+					currentRecord.opened = false
+				}
+			} else if token.kind == LT_NUMBER {
+				el = element.NumberElement{Value: token.numberValue}
+			} else if token.kind == LT_SYMBOL {
+				if token.stringValue == "true" {
+					el = element.NewBoolElement(true)
+				} else if token.stringValue == "false" {
+					el = element.NewBoolElement(false)
+				} else {
+					el = element.SymbolElement{Value: token.stringValue}
+				}
+			} else if token.kind == LT_STRING {
+				el = element.StringElement{Value: token.stringValue}
+			} else if token.kind == LT_PATH {
+				el = element.NewPathElement(resource.NewPath(strings.Split(token.stringValue, ".")))
+			} else if token.kind == LT_LABEL {
+				currentRecord.label = token.stringValue
+				currentRecord.opened = true
 			}
 
-			currentList = currentList.parent
-			currentList.Elements = append(currentList.Elements, listElement)
-		} else {
-			if token.kind == LT_NUMBER {
-				var el element.NumberElement
-				el.Value = token.numberValue
-				currentList.Elements = append(currentList.Elements, el)
+			if el != nil {
+				if currentRecord.opened {
+					el = element.NewRecordElement(currentRecord.label, el)
 
-			} else if token.kind == LT_SYMBOL {
-				var el element.SymbolElement
-				el.Value = token.stringValue
-
-				currentList.Elements = append(currentList.Elements, el)
-			} else if token.kind == LT_STRING {
-				var el element.StringElement
-				el.Value = token.stringValue
+					currentRecord.opened = false
+				}
 
 				currentList.Elements = append(currentList.Elements, el)
 			}

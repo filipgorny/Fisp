@@ -14,6 +14,14 @@ func (e BoolElement) IsList() bool {
 	return false
 }
 
+func (s BoolElement) IsString() bool {
+	return false
+}
+
+func (e BoolElement) IsNumber() bool {
+	return false
+}
+
 func (e BoolElement) IsSymbol() bool {
 	return false
 }
@@ -72,4 +80,46 @@ func (e BoolElement) FunctionElementValue() *FunctionElement {
 
 func (e BoolElement) SymbolElementValue() *SymbolElement {
 	return &SymbolElement{Value: "bool"}
+}
+
+// object
+
+func (o BoolElement) IsObject() bool {
+	return false
+}
+
+func (o BoolElement) ObjectElementValue() *ObjectElement {
+	return &ObjectElement{}
+}
+
+func (e BoolElement) StringElementValue() *StringElement {
+	if e.value {
+		return &StringElement{Value: "true"}
+	} else {
+		return &StringElement{Value: "false"}
+	}
+}
+
+func (e BoolElement) NumberElementValue() *NumberElement {
+	if e.value {
+		return &NumberElement{Value: 1}
+	} else {
+		return &NumberElement{Value: 0}
+	}
+}
+
+func (e BoolElement) IsRecord() bool {
+	return false
+}
+
+func (e BoolElement) RecordElementValue() *RecordElement {
+	return &RecordElement{value: e}
+}
+
+func (e BoolElement) IsPath() bool {
+	return false
+}
+
+func (e BoolElement) PathElementValue() *PathElement {
+	return &PathElement{}
 }

@@ -29,8 +29,9 @@ func Tokenize(code string) []LToken {
 	// code = strings.Trim(code, " ")
 	tokens := strings.Split(code, " ")
 
-	var result []LToken
+	var resultTokens []LToken
 
+	// go func() {
 	for _, token := range tokens {
 		token = strings.Trim(token, " ")
 
@@ -38,18 +39,18 @@ func Tokenize(code string) []LToken {
 			continue
 		}
 
-		result = append(result, readToken(token))
+		resultTokens = append(resultTokens, readToken(token))
 	}
 
-	return result
+	return resultTokens
 }
 
-func readToken(token string) LToken {
-	var validNumber = regexp.MustCompile(`[+-]?[0-9]+(\\.[0-9]+)?([Ee][+-]?[0-9]+)?`)
-	var validString = regexp.MustCompile(`"(.*?)"`)
-	var validLabel = regexp.MustCompile(`([a-z]+)\:`)
-	var validPath = regexp.MustCompile(`\.([a-z]+)`)
+var validNumber = regexp.MustCompile(`[+-]?[0-9]+(\\.[0-9]+)?([Ee][+-]?[0-9]+)?`)
+var validString = regexp.MustCompile(`"(.*?)"`)
+var validLabel = regexp.MustCompile(`([a-z]+)\:`)
+var validPath = regexp.MustCompile(`\.([a-z]+)`)
 
+func readToken(token string) LToken {
 	if token == "(" {
 		return LToken{LT_OPEN_LIST, "(", 0}
 	} else if token == ")" {

@@ -21,6 +21,10 @@ func (r SystemNodeResource) Get(s resource.Selector) resource.Resource {
 	return r
 }
 
+func (r SystemNodeResource) Put(selector resource.Selector, resource resource.Resource) {
+
+}
+
 type SystemContext struct {
 	parent *SystemContext
 	memory map[element.SymbolElement]language.Bind

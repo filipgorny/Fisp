@@ -5,9 +5,7 @@ import (
 	"wxl/core"
 	"wxl/directives"
 	"wxl/execution"
-	"wxl/libs/functions"
-	"wxl/libs/math"
-	"wxl/libs/variables"
+	"wxl/libs"
 	"wxl/runtime"
 )
 
@@ -21,11 +19,11 @@ func main() {
 	}
 
 	env := runtime.NewEnvironment([]*directives.Method{
-		&math.Add,
-		&math.Substract,
-		&variables.Declare,
+		&libs.Add,
+		&libs.Substract,
+		&libs.Declare,
 	}, []*directives.Keyword{
-		&functions.Declare,
+		&libs.Fun,
 	})
 
 	code := core.Parse(core.Tokenize(string(dat)))

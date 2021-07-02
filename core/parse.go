@@ -24,6 +24,7 @@ func Parse(tokens []LToken) ExprList {
 
 	currentRecord := CurrentRecord{}
 
+	// go func() {
 	for _, token := range tokens {
 		if token.kind == LT_OPEN_LIST {
 			newList := ExprList{parent: currentList}
@@ -80,6 +81,7 @@ func Parse(tokens []LToken) ExprList {
 			}
 		}
 	}
+	// }()
 
 	return list
 }

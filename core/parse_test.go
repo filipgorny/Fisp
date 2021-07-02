@@ -5,7 +5,7 @@ import (
 )
 
 func runCode(s string) ExprList {
-	return Parse(Tokenize(string(s)))
+	return Parse(Tokenize(s))
 }
 
 func TestRecord(t *testing.T) {

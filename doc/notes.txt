@@ -1,0 +1,2 @@
+- remember that code is data
+- structures dont have to have id, resources should have them

@@ -108,3 +108,13 @@ func (e StringElement) IsPath() bool {
 func (e StringElement) PathElementValue() *PathElement {
 	return &PathElement{path: resource.NewPath([]string{e.StringValue()})}
 }
+
+func (e StringElement) IsType() bool {
+	return false
+}
+
+func (e StringElement) TypeElementValue() *TypeElement {
+	return &TypeElement{
+		Type: TYPE_UNDEFINED,
+	}
+}

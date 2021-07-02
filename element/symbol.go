@@ -93,3 +93,13 @@ func (e SymbolElement) IsPath() bool {
 func (e SymbolElement) PathElementValue() *PathElement {
 	return &PathElement{}
 }
+
+func (e SymbolElement) IsType() bool {
+	return false
+}
+
+func (e SymbolElement) TypeElementValue() *TypeElement {
+	return &TypeElement{
+		Type: TYPE_UNDEFINED,
+	}
+}

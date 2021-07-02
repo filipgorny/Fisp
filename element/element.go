@@ -11,6 +11,7 @@ type Element interface {
 	IsNull() bool
 	IsFunction() bool
 	IsObject() bool
+	IsType() bool
 
 	NumberValue() float64
 	StringValue() string
@@ -24,6 +25,7 @@ type Element interface {
 	ObjectElementValue() *ObjectElement
 	RecordElementValue() *RecordElement
 	PathElementValue() *PathElement
+	TypeElementValue() *TypeElement
 
 	Children() []*Element
 }

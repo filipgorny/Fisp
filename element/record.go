@@ -113,3 +113,13 @@ func (e RecordElement) IsPath() bool {
 func (e RecordElement) PathElementValue() *PathElement {
 	return &PathElement{}
 }
+
+func (e RecordElement) IsType() bool {
+	return false
+}
+
+func (e RecordElement) TypeElementValue() *TypeElement {
+	return &TypeElement{
+		Type: TYPE_UNDEFINED,
+	}
+}

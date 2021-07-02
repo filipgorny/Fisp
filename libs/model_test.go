@@ -17,11 +17,11 @@ func TestEntity(t *testing.T) {
 		return
 	}
 
-	objectElement := result.ObjectElementValue()
+	ObjectElement := result.ObjectElementValue()
 
-	fmt.Print(objectElement)
+	fmt.Print(ObjectElement)
 
-	object := *objectElement.Object()
+	object := *ObjectElement.Object()
 	entity, ok := object.(model.Entity)
 
 	if !ok {

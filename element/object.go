@@ -2,27 +2,24 @@ package element
 
 import (
 	"fmt"
-	"wxl/object"
 
 	uuid "github.com/nu7hatch/gouuid"
 )
 
 type ObjectElement struct {
 	OID    string
-	object *object.Object
+	Name   StringElement
+	Fields []RecordElement
 }
 
-func NewObjectElement(value object.Object) ObjectElement {
+func NewObjectElement(name string, fields []RecordElement) ObjectElement {
 	u, _ := uuid.NewV4()
 
 	return ObjectElement{
 		OID:    u.String(),
-		object: &value,
+		Name:   NewStringElement(name),
+		Fields: fields,
 	}
-}
-
-func (e ObjectElement) Object() *object.Object {
-	return e.object
 }
 
 func (e ObjectElement) IsList() bool {
@@ -50,7 +47,7 @@ func (e ObjectElement) NumberValue() float64 {
 }
 
 func (e ObjectElement) StringValue() string {
-	return fmt.Sprint("object<", e.OID, ">")
+	return fmt.Sprint("object<", e.Name, ">")
 }
 
 func (e ObjectElement) Children() []*Element {
@@ -117,4 +114,14 @@ func (e ObjectElement) IsPath() bool {
 
 func (e ObjectElement) PathElementValue() *PathElement {
 	return &PathElement{}
+}
+
+func (e ObjectElement) IsType() bool {
+	return false
+}
+
+func (e ObjectElement) TypeElementValue() *TypeElement {
+	return &TypeElement{
+		Type: TYPE_UNDEFINED,
+	}
 }

@@ -123,3 +123,13 @@ func (e BoolElement) IsPath() bool {
 func (e BoolElement) PathElementValue() *PathElement {
 	return &PathElement{}
 }
+
+func (e BoolElement) IsType() bool {
+	return false
+}
+
+func (e BoolElement) TypeElementValue() *TypeElement {
+	return &TypeElement{
+		Type: TYPE_UNDEFINED,
+	}
+}

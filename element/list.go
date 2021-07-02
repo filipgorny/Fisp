@@ -154,3 +154,13 @@ func (e ListElement) IsPath() bool {
 func (e ListElement) PathElementValue() *PathElement {
 	return &PathElement{}
 }
+
+func (e ListElement) IsType() bool {
+	return false
+}
+
+func (e ListElement) TypeElementValue() *TypeElement {
+	return &TypeElement{
+		Type: TYPE_UNDEFINED,
+	}
+}

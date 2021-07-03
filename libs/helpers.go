@@ -5,17 +5,8 @@ import (
 	"wxl/directives"
 	"wxl/element"
 	"wxl/execution"
-	"wxl/language"
 	"wxl/runtime"
 )
-
-func Error(ctx *language.Context, message string) element.ErrorElement {
-	context := *ctx
-
-	context.Error(message)
-
-	return element.ErrorElement{Message: message}
-}
 
 func runCode(s string) element.Element {
 	env := runtime.NewEnvironment([]*directives.Method{
@@ -32,8 +23,12 @@ func runCode(s string) element.Element {
 
 		&Declare,
 
+		&Field,
 		&Model,
 		&Entity,
+
+		&Put,
+		&Get,
 	}, []*directives.Keyword{
 		&Fun,
 	})

@@ -16,7 +16,7 @@ func Run(env runtime.Environment, codeTree core.ExprList) element.Element {
 
 	for _, element := range codeTree.Elements {
 		if element.IsList() {
-			newCtx := ctx.Branch()
+			newCtx := *ctx.Branch()
 			result := runtime.Evaluate(element.ListElementValue(), newCtx)
 
 			resultList.Push(result)

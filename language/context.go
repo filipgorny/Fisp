@@ -8,9 +8,11 @@ import (
 type Context interface {
 	resource.Resource
 
-	Branch() Context
 	Declare(s element.SymbolElement, bind Bind)
 	Lookup(s element.Element) Bind
-	Log(content interface{})
-	Error(content interface{})
+
+	Put(p element.PathElement, value resource.Resource)
+	Get(p element.PathElement) resource.Resource
+
+	Branch() *Context
 }

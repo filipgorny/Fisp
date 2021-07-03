@@ -13,8 +13,6 @@ var Fun = directives.Keyword{
 		currentContext := *ctx
 
 		if len(params) < 3 {
-			currentContext.Error("Not enough arguments for method `fun`.")
-
 			return element.ErrorElement{}
 		}
 
@@ -48,7 +46,6 @@ var Fun = directives.Keyword{
 			)
 		} else {
 			msg := "Invalid function declaration."
-			currentContext.Error(msg)
 			return element.ErrorElement{Message: msg}
 		}
 

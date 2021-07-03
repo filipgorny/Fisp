@@ -2,21 +2,27 @@ package web
 
 import (
 	"syscall/js"
-	"wxl/object"
+	"wxl/element"
 	"wxl/resource"
+	"wxl/serialize"
 )
 
 type WebNodeResource struct {
 }
 
-func (r WebNodeResource) Class() object.Class {
-	return object.Class{Name: "Web-resource"}
+func PathTranslate(p element.PathElement) string {
+	return p.String()
 }
 
-func (r WebNodeResource) Get(s resource.Selector) resource.Resource {
+func ResourceTranslate(r resource.Resource) string {
+	return serialize.Serialize(r.(element.Element))
+}
+
+func (r WebNodeResource) Get(p element.PathElement) resource.Resource {
 	return r
 }
 
-func (r WebNodeResource) Put(selector resource.Selector, resource resource.Resource) {
-	jsPutMethod.Invoke(js.Null, js.ValueOf(selector), js.ValueOf(resource))
+func (r WebNodeResource) Put(p element.PathElement, resource resource.Resource) {
+	js.Global().Call("console.log", ("dupa"))
+	js.Global().Call("wxlPutMethod", js.ValueOf(p), js.ValueOf(resource))
 }

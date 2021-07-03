@@ -1,6 +1,10 @@
 package element
 
+import "wxl/resource"
+
 type Element interface {
+	resource.Resource
+
 	IsRecord() bool
 	IsPath() bool
 	IsList() bool
@@ -12,6 +16,7 @@ type Element interface {
 	IsFunction() bool
 	IsObject() bool
 	IsType() bool
+	IsBool() bool
 
 	NumberValue() float64
 	StringValue() string

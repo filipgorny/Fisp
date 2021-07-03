@@ -4,7 +4,6 @@ import (
 	"wxl/directives"
 	"wxl/element"
 	"wxl/language"
-	"wxl/object"
 )
 
 type NullBind struct {
@@ -15,10 +14,6 @@ func (bind NullBind) IsElementBind() bool {
 }
 
 func (bind NullBind) IsMethodBind() bool {
-	return false
-}
-
-func (bind NullBind) IsObjectBind() bool {
 	return false
 }
 
@@ -44,8 +39,4 @@ func (bind NullBind) GetKeywordValue() language.Keyword {
 			return element.NullElement{}
 		},
 	}
-}
-
-func (bind NullBind) GetObjectValue() *object.Object {
-	return nil
 }

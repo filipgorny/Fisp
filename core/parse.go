@@ -3,7 +3,6 @@ package core
 import (
 	"strings"
 	"wxl/element"
-	"wxl/resource"
 )
 
 type ExprList struct {
@@ -64,7 +63,9 @@ func Parse(tokens []LToken) ExprList {
 			} else if token.kind == LT_STRING {
 				el = element.StringElement{Value: token.stringValue}
 			} else if token.kind == LT_PATH {
-				el = element.NewPathElement(resource.NewPath(strings.Split(token.stringValue, ".")))
+				el = element.NewPathElement(strings.Split(token.stringValue, "."))
+			} else if token.kind == LT_TYPE {
+				el = element.NewTypeElement(strings.Replace(token.stringValue, "^", "", 1))
 			} else if token.kind == LT_LABEL {
 				currentRecord.label = token.stringValue
 				currentRecord.opened = true

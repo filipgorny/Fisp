@@ -5,7 +5,6 @@ import (
 	"wxl/language"
 	"wxl/logging"
 	"wxl/memory"
-	"wxl/object"
 	"wxl/resource"
 	"wxl/runtime"
 )
@@ -34,10 +33,6 @@ func NewContext(env runtime.Environment, log *logging.Log) WebContext {
 	return ctx
 }
 
-func (ctx WebContext) Branch() language.Context {
-	return WebContext{parent: &ctx, log: ctx.log, memory: make(map[element.SymbolElement]language.Bind)}
-}
-
 func (ctx WebContext) Declare(s element.SymbolElement, bind language.Bind) {
 	if ctx.parent != nil {
 		ctx.parent.Declare(s, bind)
@@ -58,18 +53,16 @@ func (ctx WebContext) Lookup(s element.Element) language.Bind {
 	return memory.NullBind{}
 }
 
-func (ctx WebContext) Log(content interface{}) {
-	ctx.log.Info(content)
+func (ctx WebContext) Put(p element.PathElement, value resource.Resource) {
+	ctx.root.Put(p, value)
 }
 
-func (ctx WebContext) Error(content interface{}) {
-	ctx.log.Error(content)
+func (ctx WebContext) Get(p element.PathElement) resource.Resource {
+	return ctx.root.Get(p)
 }
 
-func (ctx WebContext) Get(s resource.Selector) resource.Resource {
-	return ctx.root
-}
+func (ctx WebContext) Branch() *language.Context {
+	var newCtx language.Context = ctx
 
-func (ctx WebContext) Class() object.Class {
-	return object.Class{Name: "Web-context"}
+	return &newCtx
 }

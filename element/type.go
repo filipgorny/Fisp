@@ -24,14 +24,64 @@ func NewTypeElement(typeName string) TypeElement {
 	for _, allowedType := range Types {
 		if allowedType == typeName {
 			return TypeElement{
-				Type: TYPE_DISALLOWED,
+				Type: typeName,
 			}
 		}
 	}
 
 	return TypeElement{
-		Type: typeName,
+		Type: TYPE_DISALLOWED,
 	}
+}
+
+func (s TypeElement) Name() string {
+	return s.Type
+}
+
+func (s TypeElement) IsValid() bool {
+	for _, allowedType := range Types {
+		if allowedType == s.Type {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (s TypeElement) Validate(value Element) bool {
+	if s.Type == TYPE_BOOL {
+		return value.IsBool()
+	}
+
+	if s.Type == TYPE_FUNCTION {
+		return value.IsFunction()
+	}
+
+	if s.Type == TYPE_LIST {
+		return value.IsList()
+	}
+
+	if s.Type == TYPE_NUMBER {
+		return value.IsNumber()
+	}
+
+	if s.Type == TYPE_OBJECT {
+		return value.IsObject()
+	}
+
+	if s.Type == TYPE_PATH {
+		return value.IsPath()
+	}
+
+	if s.Type == TYPE_STRING {
+		return value.IsString()
+	}
+
+	if s.Type == TYPE_UNDEFINED {
+		return value.IsNull()
+	}
+
+	return false
 }
 
 func (s TypeElement) IsList() bool {
@@ -130,4 +180,8 @@ func (e TypeElement) IsType() bool {
 
 func (e TypeElement) TypeElementValue() *TypeElement {
 	return &e
+}
+
+func (e TypeElement) IsBool() bool {
+	return false
 }

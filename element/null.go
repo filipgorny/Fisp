@@ -32,7 +32,9 @@ func (n NullElement) Children() []*Element {
 }
 
 func (n NullElement) ListElementValue() *ListElement {
-	return nil
+	list := NewListElement()
+
+	return &list
 }
 
 func (n NullElement) SymbolElementValue() *SymbolElement {
@@ -101,4 +103,8 @@ func (e NullElement) TypeElementValue() *TypeElement {
 	return &TypeElement{
 		Type: TYPE_UNDEFINED,
 	}
+}
+
+func (e NullElement) IsBool() bool {
+	return false
 }

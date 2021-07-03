@@ -1,31 +1,24 @@
 package libs
 
-// import (
-// 	"testing"
-// 	"wxl/core"
-// 	"wxl/directives"
-// 	"wxl/element"
-// 	"wxl/execution"
-// 	"wxl/runtime"
-// )
+import (
+	"testing"
+)
 
-// func runCode(s string) element.Element {
-// 	env := runtime.NewEnvironment([]*directives.Method{
-// 		&Get,
-// 	}, []*directives.Keyword{})
+func TestPut(t *testing.T) {
+	result := runCode(`
+		(put .task1 (entity (model task (field label: ^string) (field done: ^bool)) label: "test123" done: true))
+    (get .task1)
+	`)
 
-// 	code := core.Parse(core.Tokenize(string(s)))
+	if !result.IsObject() {
+		t.Error("Result is not the object.")
 
-// 	return execution.Run(env, code)
-// }
+		return
+	}
 
-// func TestFun(t *testing.T) {
-// 	// result := runCode(`(
-// 	// 	(set task (model label: string done: bool)))
-// 	// 	(new task label: "test" done: false)
-// 	// )`)
+	if result.ObjectElementValue().Name.Value != "entity" {
+		t.Error("Got object that is not an entity.")
 
-// 	// if result.IsError() || result.NumberValue() != 60 {
-// 	// 	t.Error(result.StringValue())
-// 	// }
-// }
+		return
+	}
+}

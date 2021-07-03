@@ -4,7 +4,6 @@ import (
 	"wxl/directives"
 	"wxl/element"
 	"wxl/language"
-	"wxl/object"
 )
 
 type KeywordBind struct {
@@ -18,10 +17,6 @@ func NewKeywordBind(keyword language.Keyword) KeywordBind {
 }
 
 func (bind KeywordBind) IsElementBind() bool {
-	return false
-}
-
-func (bind KeywordBind) IsObjectBind() bool {
 	return false
 }
 
@@ -47,8 +42,4 @@ func (bind KeywordBind) GetMethodValue() language.Method {
 
 func (bind KeywordBind) GetKeywordValue() language.Keyword {
 	return bind.keyword
-}
-
-func (bind KeywordBind) GetObjectValue() *object.Object {
-	return nil
 }

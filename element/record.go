@@ -1,18 +1,18 @@
 package element
 
 type RecordElement struct {
-	label string
+	label StringElement
 	value Element
 }
 
 func NewRecordElement(label string, value Element) RecordElement {
 	return RecordElement{
-		label: label,
+		label: NewStringElement(label),
 		value: value,
 	}
 }
 
-func (r RecordElement) Label() string {
+func (r RecordElement) Label() StringElement {
 	return r.label
 }
 
@@ -45,7 +45,7 @@ func (e RecordElement) NumberValue() float64 {
 }
 
 func (e RecordElement) StringValue() string {
-	return e.label
+	return e.label.Value + ": " + e.value.StringValue()
 }
 
 func (e RecordElement) Children() []*Element {
@@ -57,7 +57,7 @@ func (e RecordElement) ListElementValue() *ListElement {
 }
 
 func (e RecordElement) SymbolValue() string {
-	return e.label
+	return e.label.Value
 }
 
 func (e RecordElement) IsError() bool {
@@ -91,7 +91,7 @@ func (o RecordElement) ObjectElementValue() *ObjectElement {
 }
 
 func (e RecordElement) StringElementValue() *StringElement {
-	return &StringElement{Value: e.label}
+	return &StringElement{Value: e.label.Value}
 }
 
 func (e RecordElement) NumberElementValue() *NumberElement {
@@ -122,4 +122,8 @@ func (e RecordElement) TypeElementValue() *TypeElement {
 	return &TypeElement{
 		Type: TYPE_UNDEFINED,
 	}
+}
+
+func (e RecordElement) IsBool() bool {
+	return false
 }

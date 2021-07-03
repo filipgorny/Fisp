@@ -1,10 +1,21 @@
 package runtime
 
 import (
+	"fmt"
 	"wxl/element"
 	"wxl/language"
 	"wxl/memory"
 )
+
+func DebugLog(el element.Element) {
+	if el.IsError() {
+		ShowError(el)
+	}
+}
+
+func ShowError(el element.Element) {
+	fmt.Println(el.StringValue())
+}
 
 func Evaluate(listElement *element.ListElement, ctx language.Context) element.Element {
 	firstElement := *listElement.First()
@@ -19,8 +30,10 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 				el := *param
 
 				if el.IsList() {
-					newCtx := ctx.Branch()
+					newCtx := *ctx.Branch()
 					el = Evaluate(el.ListElementValue(), newCtx)
+
+					DebugLog(el)
 				}
 
 				if el.IsSymbol() {
@@ -34,7 +47,11 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 				params = append(params, &el)
 			}
 
-			return bind.GetMethodValue().GetCall()(params, &ctx)
+			methodResult := bind.GetMethodValue().GetCall()(params, &ctx)
+
+			DebugLog(methodResult)
+
+			return methodResult
 		}
 
 		if bind.IsKeywordBind() {
@@ -48,18 +65,24 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 
 			bindResult := bind.GetKeywordValue().GetCall()(params, &ctx)
 
+			DebugLog(bindResult)
+
 			return bindResult
 		}
 
 		if bind.GetElementValue().IsFunction() {
-			return EvaluateFun(*bind.GetElementValue().FunctionElementValue(), listElement, ctx)
+			funcResult := EvaluateFun(*bind.GetElementValue().FunctionElementValue(), listElement, ctx)
+
+			DebugLog(funcResult)
+
+			return funcResult
 		}
 	}
 
 	// anonymous function call
 
 	if firstElement.IsFunction() {
-		newCtx := ctx.Branch()
+		newCtx := *ctx.Branch()
 		return EvaluateFun(*firstElement.FunctionElementValue(), listElement, newCtx)
 	}
 
@@ -76,8 +99,10 @@ func Evaluate(listElement *element.ListElement, ctx language.Context) element.El
 			el := *param
 
 			if el.IsList() {
-				newCtx := ctx.Branch()
+				newCtx := *ctx.Branch()
 				el = Evaluate(el.ListElementValue(), newCtx)
+
+				DebugLog(el)
 			}
 
 			if el.IsSymbol() {
@@ -104,8 +129,12 @@ func EvaluateFun(functionElement element.FunctionElement, listElement *element.L
 		el := *param
 
 		if el.IsList() {
-			newCtx := ctx.Branch()
+			newCtx := *ctx.Branch()
 			el = Evaluate(el.ListElementValue(), newCtx)
+
+			if el.IsError() {
+				fmt.Print("ERROR: " + el.StringValue())
+			}
 		}
 
 		if el.IsSymbol() {
@@ -119,7 +148,7 @@ func EvaluateFun(functionElement element.FunctionElement, listElement *element.L
 		params = append(params, &el)
 	}
 
-	functionCtx := ctx.Branch()
+	functionCtx := *ctx.Branch()
 
 	children := functionElement.GetArguments().Children()
 

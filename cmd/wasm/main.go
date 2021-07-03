@@ -24,6 +24,7 @@ func createWxlRunnerFunction() js.Func {
 }
 
 func wxlConstructor() js.Func {
+
 	jsonFunc := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		this.Set("registerPutMethod", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 			web.RegisterPutFunction(args[0])
@@ -43,21 +44,24 @@ func wxlConstructor() js.Func {
 	return jsonFunc
 }
 
+var wxlPutMethod = js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+	document := js.Global().Get("document")
+
+	event := document.Get("wxlPutEvent")
+
+	return document.Call("dispatchEvent", event)
+})
+
+var wxlGetMethod = js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+	return js.Null()
+})
+
 func main() {
 	done := make(chan struct{}, 0)
 	defer close(done)
 
-	js.Global().Set("wxlSetPutMethod", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		web.RegisterPutFunction(args[0])
-
-		return js.Null()
-	}))
-
-	js.Global().Set("wxlSetGetMethod", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		web.RegisterGetFunction(args[0])
-
-		return js.Null()
-	}))
+	js.Global().Set("wxlPutMethod", wxlPutMethod)
+	js.Global().Set("wxlGetMethod", wxlGetMethod)
 
 	js.Global().Set("runWxl", createWxlRunnerFunction())
 

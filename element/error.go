@@ -1,7 +1,15 @@
 package element
 
+import "strings"
+
 type ErrorElement struct {
 	Message string
+}
+
+func NewErrorElement(messages ...string) ErrorElement {
+	return ErrorElement{
+		Message: strings.Join(messages, " "),
+	}
 }
 
 func (e ErrorElement) IsList() bool {
@@ -92,4 +100,18 @@ func (e ErrorElement) IsPath() bool {
 
 func (e ErrorElement) PathElementValue() *PathElement {
 	return &PathElement{}
+}
+
+func (e ErrorElement) IsType() bool {
+	return false
+}
+
+func (e ErrorElement) TypeElementValue() *TypeElement {
+	return &TypeElement{
+		Type: TYPE_UNDEFINED,
+	}
+}
+
+func (e ErrorElement) IsBool() bool {
+	return false
 }

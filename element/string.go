@@ -2,7 +2,6 @@ package element
 
 import (
 	"strconv"
-	"wxl/resource"
 )
 
 type StringElement struct {
@@ -106,7 +105,9 @@ func (e StringElement) IsPath() bool {
 }
 
 func (e StringElement) PathElementValue() *PathElement {
-	return &PathElement{path: resource.NewPath([]string{e.StringValue()})}
+	path := NewPathElement([]string{e.StringValue()})
+
+	return &path
 }
 
 func (e StringElement) IsType() bool {
@@ -117,4 +118,8 @@ func (e StringElement) TypeElementValue() *TypeElement {
 	return &TypeElement{
 		Type: TYPE_UNDEFINED,
 	}
+}
+
+func (e StringElement) IsBool() bool {
+	return false
 }

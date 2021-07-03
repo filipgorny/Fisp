@@ -105,3 +105,7 @@ func (e NumberElement) TypeElementValue() *TypeElement {
 		Type: TYPE_UNDEFINED,
 	}
 }
+
+func (e NumberElement) IsBool() bool {
+	return false
+}

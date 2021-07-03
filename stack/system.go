@@ -5,24 +5,25 @@ import (
 	"wxl/language"
 	"wxl/logging"
 	"wxl/memory"
-	"wxl/object"
 	"wxl/resource"
 	"wxl/runtime"
 )
 
+var SystemResourceMemory map[string]resource.Resource
+
 type SystemNodeResource struct {
 }
 
-func (r SystemNodeResource) Class() object.Class {
-	return object.Class{Name: "system-resource"}
+func (r SystemNodeResource) Get(path element.PathElement) resource.Resource {
+	if SystemResourceMemory[path.String()] == nil {
+		return element.NullElement{}
+	}
+
+	return SystemResourceMemory[path.String()]
 }
 
-func (r SystemNodeResource) Get(s resource.Selector) resource.Resource {
-	return r
-}
-
-func (r SystemNodeResource) Put(selector resource.Selector, resource resource.Resource) {
-
+func (r SystemNodeResource) Put(path element.PathElement, resource resource.Resource) {
+	SystemResourceMemory[path.String()] = resource
 }
 
 type SystemContext struct {
@@ -33,10 +34,15 @@ type SystemContext struct {
 }
 
 func NewContext(env runtime.Environment, log *logging.Log) SystemContext {
+	node := SystemNodeResource{}
+
 	ctx := SystemContext{
 		memory: make(map[element.SymbolElement]language.Bind),
 		log:    log,
+		root:   node,
 	}
+
+	SystemResourceMemory = make(map[string]resource.Resource)
 
 	for _, m := range env.Methods {
 		ctx.Declare(m.Symbol, memory.NewMethodBind(m))
@@ -49,8 +55,10 @@ func NewContext(env runtime.Environment, log *logging.Log) SystemContext {
 	return ctx
 }
 
-func (ctx SystemContext) Branch() language.Context {
-	return SystemContext{parent: &ctx, log: ctx.log, memory: make(map[element.SymbolElement]language.Bind)}
+func (ctx SystemContext) Branch() *language.Context {
+	var newCtx language.Context = SystemContext{parent: &ctx, log: ctx.log, memory: make(map[element.SymbolElement]language.Bind)}
+
+	return &newCtx
 }
 
 func (ctx SystemContext) Declare(s element.SymbolElement, bind language.Bind) {
@@ -81,10 +89,10 @@ func (ctx SystemContext) Error(content interface{}) {
 	ctx.log.Error(content)
 }
 
-func (ctx SystemContext) Get(s resource.Selector) resource.Resource {
-	return ctx.root
+func (ctx SystemContext) Get(path element.PathElement) resource.Resource {
+	return ctx.root.Get(path)
 }
 
-func (ctx SystemContext) Class() object.Class {
-	return object.Class{Name: "system-context"}
+func (ctx SystemContext) Put(path element.PathElement, resource resource.Resource) {
+	ctx.root.Put(path, resource)
 }

@@ -133,3 +133,7 @@ func (e BoolElement) TypeElementValue() *TypeElement {
 		Type: TYPE_UNDEFINED,
 	}
 }
+
+func (e BoolElement) IsBool() bool {
+	return true
+}

@@ -1,25 +1,61 @@
 package element
 
 import (
-	"fmt"
-
 	uuid "github.com/nu7hatch/gouuid"
 )
 
 type ObjectElement struct {
-	OID    string
-	Name   StringElement
-	Fields []RecordElement
+	OID          string
+	Name         StringElement
+	Properties   []RecordElement
+	nullProperty Element
 }
 
-func NewObjectElement(name string, fields []RecordElement) ObjectElement {
+func NewObjectElement(name string, properties []RecordElement) ObjectElement {
 	u, _ := uuid.NewV4()
 
 	return ObjectElement{
-		OID:    u.String(),
-		Name:   NewStringElement(name),
-		Fields: fields,
+		OID:          u.String(),
+		Name:         NewStringElement(name),
+		Properties:   properties,
+		nullProperty: NullElement{},
 	}
+}
+
+func (e ObjectElement) IsA(name string) bool {
+	return e.Name.Value == name
+}
+
+func (e *ObjectElement) Get(name string) Element {
+	for _, property := range e.Properties {
+		if property.label.Value == name {
+			return property.value
+		}
+	}
+
+	return e.nullProperty
+}
+
+func (e *ObjectElement) Set(name string, value Element) {
+	newProperties := []RecordElement{}
+
+	found := false
+
+	for _, property := range e.Properties {
+		if property.label == e.Name {
+			newProperties = append(newProperties, NewRecordElement(name, value))
+
+			found = true
+		} else {
+			newProperties = append(newProperties, property)
+		}
+	}
+
+	if !found {
+		newProperties = append(newProperties, NewRecordElement(name, value))
+	}
+
+	e.Properties = newProperties
 }
 
 func (e ObjectElement) IsList() bool {
@@ -47,7 +83,7 @@ func (e ObjectElement) NumberValue() float64 {
 }
 
 func (e ObjectElement) StringValue() string {
-	return fmt.Sprint("object<", e.Name, ">")
+	return e.Serialize().StringValue()
 }
 
 func (e ObjectElement) Children() []*Element {
@@ -93,7 +129,9 @@ func (o ObjectElement) ObjectElementValue() *ObjectElement {
 }
 
 func (e ObjectElement) StringElementValue() *StringElement {
-	return &StringElement{Value: "object"}
+	str := NewStringElement(e.StringValue())
+
+	return &str
 }
 
 func (e ObjectElement) NumberElementValue() *NumberElement {
@@ -124,4 +162,25 @@ func (e ObjectElement) TypeElementValue() *TypeElement {
 	return &TypeElement{
 		Type: TYPE_UNDEFINED,
 	}
+}
+
+func (e ObjectElement) IsBool() bool {
+	return false
+}
+
+func (e *ObjectElement) Serialize() ListElement {
+	resultList := NewListElement()
+
+	resultList.Push(NewSymbolElement("object"))
+	resultList.Push(e.Name)
+
+	propertiesList := NewListElement()
+
+	for _, property := range e.Properties {
+		propertiesList.Push(NewRecordElement(property.label.Value, property.value.StringElementValue()))
+	}
+
+	resultList.Push(propertiesList)
+
+	return resultList
 }

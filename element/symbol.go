@@ -4,6 +4,12 @@ type SymbolElement struct {
 	Value string
 }
 
+func NewSymbolElement(label string) SymbolElement {
+	return SymbolElement{
+		Value: label,
+	}
+}
+
 func (s SymbolElement) IsList() bool {
 	return false
 }
@@ -102,4 +108,8 @@ func (e SymbolElement) TypeElementValue() *TypeElement {
 	return &TypeElement{
 		Type: TYPE_UNDEFINED,
 	}
+}
+
+func (e SymbolElement) IsBool() bool {
+	return false
 }

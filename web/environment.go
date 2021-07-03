@@ -23,6 +23,9 @@ var Environment = runtime.NewEnvironment(
 
 		&libs.Model,
 		&libs.Entity,
+
+		&libs.Put,
+		&libs.Get,
 	},
 	[]*directives.Keyword{
 		&libs.Fun,

@@ -1,9 +1,18 @@
 package element
 
-import "log"
+import (
+	"log"
+	"strings"
+)
 
 type ListElement struct {
 	Elements []Element
+}
+
+func NewListElement() ListElement {
+	return ListElement{
+		Elements: []Element{},
+	}
 }
 
 func (l ListElement) IsList() bool {
@@ -15,14 +24,14 @@ func (l ListElement) NumberValue() float64 {
 }
 
 func (l ListElement) StringValue() string {
-	var s = ""
+	sItems := []string{}
 
 	for _, element := range l.Children() {
 		el := *element
-		s = s + ", " + el.StringValue()
+		sItems = append(sItems, el.StringValue())
 	}
 
-	return s
+	return "(" + strings.Join(sItems, " ") + ")"
 }
 
 func (e ListElement) IsNumber() bool {
@@ -30,7 +39,7 @@ func (e ListElement) IsNumber() bool {
 }
 
 func (l ListElement) SymbolElementValue() *SymbolElement {
-	return &SymbolElement{Value: "list"}
+	return &SymbolElement{Value: l.StringValue()}
 }
 
 func (l ListElement) IsFunction() bool {
@@ -113,6 +122,14 @@ func (list ListElement) First() *Element {
 	return &list.Elements[0]
 }
 
+func (list ListElement) Length() int {
+	return len(list.Elements)
+}
+
+func (list ListElement) IsEmpty() bool {
+	return len(list.Elements) == 0
+}
+
 func (list ListElement) IsError() bool {
 	return false
 }
@@ -132,7 +149,7 @@ func (o ListElement) ObjectElementValue() *ObjectElement {
 }
 
 func (e ListElement) StringElementValue() *StringElement {
-	return &StringElement{Value: "list"}
+	return &StringElement{Value: e.StringValue()}
 }
 
 func (e ListElement) NumberElementValue() *NumberElement {
@@ -163,4 +180,8 @@ func (e ListElement) TypeElementValue() *TypeElement {
 	return &TypeElement{
 		Type: TYPE_UNDEFINED,
 	}
+}
+
+func (e ListElement) IsBool() bool {
+	return false
 }

@@ -14,6 +14,7 @@ const (
 	LT_SYMBOL     = iota
 	LT_LABEL      = iota
 	LT_PATH       = iota
+	LT_TYPE       = iota
 )
 
 type LToken struct {
@@ -49,6 +50,7 @@ var validNumber = regexp.MustCompile(`[+-]?[0-9]+(\\.[0-9]+)?([Ee][+-]?[0-9]+)?`
 var validString = regexp.MustCompile(`"(.*?)"`)
 var validLabel = regexp.MustCompile(`([a-z]+)\:`)
 var validPath = regexp.MustCompile(`\.([a-z]+)`)
+var validType = regexp.MustCompile(`\^([a-z]+)`)
 
 func readToken(token string) LToken {
 	if token == "(" {
@@ -67,6 +69,9 @@ func readToken(token string) LToken {
 	} else if validPath.MatchString(token) {
 		stringValue := strings.Trim(token, `:`)
 		return LToken{LT_PATH, stringValue, 0}
+	} else if validType.MatchString(token) {
+		stringValue := strings.Trim(token, `^`)
+		return LToken{LT_TYPE, stringValue, 0}
 	} else {
 		return LToken{LT_SYMBOL, token, 0}
 	}

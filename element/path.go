@@ -1,19 +1,33 @@
 package element
 
-import "wxl/resource"
+type PathSelector []StringElement
 
 type PathElement struct {
-	path resource.PathSelector
+	path []StringElement
 }
 
-func NewPathElement(path resource.PathSelector) PathElement {
-	return PathElement{
-		path: path,
+func NewPathElement(strings []string) PathElement {
+	path := PathElement{}
+
+	for _, s := range strings {
+		path.path = append(path.path, NewStringElement(s))
 	}
+
+	return path
 }
 
-func (p PathElement) Path() resource.PathSelector {
+func (p PathElement) Path() PathSelector {
 	return p.path
+}
+
+func (p PathElement) String() string {
+	s := ""
+
+	for _, p := range p.path {
+		s += "." + p.StringValue()
+	}
+
+	return s
 }
 
 func (e PathElement) IsList() bool {
@@ -41,7 +55,7 @@ func (e PathElement) NumberValue() float64 {
 }
 
 func (e PathElement) StringValue() string {
-	return e.path.String()
+	return e.String()
 }
 
 func (e PathElement) Children() []*Element {
@@ -53,7 +67,7 @@ func (e PathElement) ListElementValue() *ListElement {
 }
 
 func (e PathElement) SymbolValue() string {
-	return e.path.String()
+	return e.String()
 }
 
 func (e PathElement) IsError() bool {
@@ -118,4 +132,8 @@ func (e PathElement) TypeElementValue() *TypeElement {
 	return &TypeElement{
 		Type: TYPE_UNDEFINED,
 	}
+}
+
+func (e PathElement) IsBool() bool {
+	return false
 }

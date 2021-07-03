@@ -1,14 +1,12 @@
 package libs
 
 import (
-	"fmt"
 	"testing"
-	"wxl/model"
 )
 
 func TestEntity(t *testing.T) {
 	result := runCode(`
-		(entity (model task label: string done: bool) label: "test123" done: true)
+		(entity (model task (field label: ^string) (field done: ^bool)) label: "test123" done: true)
 	`)
 
 	if !result.IsObject() {
@@ -19,28 +17,9 @@ func TestEntity(t *testing.T) {
 
 	ObjectElement := result.ObjectElementValue()
 
-	fmt.Print(ObjectElement)
+	codeValue := ObjectElement.Serialize().StringValue()
 
-	object := *ObjectElement.Object()
-	entity, ok := object.(model.Entity)
+	t.Log(codeValue)
 
-	if !ok {
-		t.Error("Result is not entity.")
-		return
-	}
-
-	if entity.Model.Name() != "task" {
-		t.Error("Wront model name in the entity.")
-		return
-	}
-
-	if entity.Attribute("label").Value.StringValue() != "test123" {
-		t.Error("Wrong attribute value")
-		return
-	}
-
-	if entity.Attribute("done").Value.BoolValue() == false {
-		t.Error("Wrong attribute value")
-		return
-	}
+	return
 }

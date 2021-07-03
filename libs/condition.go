@@ -9,8 +9,6 @@ import (
 var Equal = directives.Method{
 	Symbol: element.SymbolElement{Value: "=="},
 	Call: func(params []*element.Element, ctx *language.Context) element.Element {
-		ctxCurr := *ctx
-
 		if len(params) < 2 {
 			return element.NewBoolElement(true)
 		}
@@ -24,8 +22,6 @@ var Equal = directives.Method{
 
 			for ii, subToken := range params {
 				subTokenElement := *subToken
-
-				ctxCurr.Log(tokenElement.StringValue() + ", " + subTokenElement.StringValue())
 
 				if ii < 2 {
 					continue
@@ -76,8 +72,6 @@ var NotEqual = directives.Method{
 var LeftBigger = directives.Method{
 	Symbol: element.SymbolElement{Value: ">"},
 	Call: func(params []*element.Element, ctx *language.Context) element.Element {
-		ctxCurr := *ctx
-
 		if len(params) < 2 {
 			return element.NewBoolElement(true)
 		}
@@ -95,8 +89,6 @@ var LeftBigger = directives.Method{
 				if ii < 2 {
 					continue
 				}
-
-				ctxCurr.Log(tokenElement.StringValue() + "<" + subTokenElement.StringValue())
 
 				if tokenElement.NumberValue() < subTokenElement.NumberValue() && i < ii {
 					return element.NewBoolElement(false)
@@ -111,8 +103,6 @@ var LeftBigger = directives.Method{
 var RightBigger = directives.Method{
 	Symbol: element.SymbolElement{Value: "<"},
 	Call: func(params []*element.Element, ctx *language.Context) element.Element {
-		ctxCurr := *ctx
-
 		if len(params) < 2 {
 			return element.NewBoolElement(true)
 		}
@@ -131,8 +121,6 @@ var RightBigger = directives.Method{
 					continue
 				}
 
-				ctxCurr.Log(tokenElement.StringValue() + "<" + subTokenElement.StringValue())
-
 				if tokenElement.NumberValue() > subTokenElement.NumberValue() && i < ii {
 					return element.NewBoolElement(false)
 				}
@@ -146,8 +134,6 @@ var RightBigger = directives.Method{
 var IfTrue = directives.Method{
 	Symbol: element.SymbolElement{Value: "?"},
 	Call: func(params []*element.Element, ctx *language.Context) element.Element {
-		ctxCurr := *ctx
-
 		if len(params) < 4 {
 			return element.ErrorElement{Message: "Not enough elements."}
 		}
@@ -163,8 +149,6 @@ var IfTrue = directives.Method{
 		if len(params) > 3 {
 			elseDo = *params[3]
 		}
-
-		ctxCurr.Log("Test if true: " + testEl.StringValue())
 
 		if testEl.BoolValue() {
 			return do

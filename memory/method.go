@@ -4,7 +4,6 @@ import (
 	"wxl/directives"
 	"wxl/element"
 	"wxl/language"
-	"wxl/object"
 )
 
 type MethodBind struct {
@@ -18,10 +17,6 @@ func NewMethodBind(method language.Method) MethodBind {
 }
 
 func (bind MethodBind) IsElementBind() bool {
-	return false
-}
-
-func (bind MethodBind) IsObjectBind() bool {
 	return false
 }
 
@@ -47,8 +42,4 @@ func (bind MethodBind) GetKeywordValue() language.Keyword {
 			return element.NullElement{}
 		},
 	}
-}
-
-func (bind MethodBind) GetObjectValue() *object.Object {
-	return nil
 }
